@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TextService } from "../sevices/textService";
 import { Text } from '../model/text'
 import { Word } from "../model/word";
+import { WordService } from "../sevices/wordService";
 
 @Component({
   selector: 'text-form',
@@ -29,7 +30,7 @@ export class TextForm implements OnInit{
     palabrasAVerificar: boolean = false;
     pendingWords: Word[] = [];
 
-    constructor(private textService:TextService, private router: Router){}
+    constructor(private textService:TextService, private wordService:WordService, private router: Router){}
 
     ngOnInit(){
         console.log("Page loaded successfully")
@@ -61,7 +62,7 @@ export class TextForm implements OnInit{
     }
 
     saveWords(){
-        this.textService.saveWords(this.pendingWords).subscribe(
+        this.wordService.saveWords(this.pendingWords).subscribe(
             () => {
                 this.pendingWords = [];
                 this.palabrasAVerificar = false;
@@ -71,7 +72,7 @@ export class TextForm implements OnInit{
     }
 
     onSubmit(){
-        this.textService.getPendingWords(this.text.text).subscribe(
+        this.wordService.getPendingWords(this.text.text).subscribe(
             (pendingWords) => {
                 this.pendingWords = pendingWords;
                 if(this.pendingWords.length == 0){

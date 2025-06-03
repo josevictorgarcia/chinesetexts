@@ -1,0 +1,56 @@
+<div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
+  <style>
+    .btn-create {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #27ae60;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-create:hover {
+      background-color: #2ecc71;
+    }
+
+    .btn-back {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #c0392b;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-back:hover {
+      background-color: #e74c3c;
+    }
+  </style>
+
+  <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
+    Colecciones de Flashcards
+  </h1>
+
+  <!-- Botón para crear nueva colección -->
+  <div class="text-center mb-4">
+    <button class="btn-create">
+      Crear Nueva Colección
+    </button>
+  </div>
+
+  <!-- Lista de colecciones -->
+  <div class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;">
+    <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+      <div><strong>Creada:</strong> May 31, 2025 </div>
+      <div><strong>Número de Flashcards:</strong> 16 </div>
+    </div>
+    <h3 class="mb-0 text-dark fw-semibold">Nombre colección</h3>
+  </div>
+
+  <!-- Botón volver (opcional) -->
+  <div class="text-center mt-4">
+    <button class="btn-back" (click)="back()">Volver</button>
+  </div>
+</div>

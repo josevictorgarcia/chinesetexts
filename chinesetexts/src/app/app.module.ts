@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TextPage } from './components/text-page.component';
 import { TextForm } from './components/text-form.component';
+import { Flashcards } from './components/flashcards.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TextForm } from './components/text-form.component';
     AppFooter,
     AppShowText,
     TextPage,
-    TextForm
+    TextForm,
+    Flashcards
   ],
   imports: [
     BrowserModule,

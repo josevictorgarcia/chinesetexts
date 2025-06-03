@@ -3,21 +3,13 @@ package com.tesseract.demo.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tesseract.demo.Model.Text;
-import com.tesseract.demo.Model.Word;
-import com.tesseract.demo.Service.DictionaryService;
 import com.tesseract.demo.Service.TextService;
 import com.tesseract.demo.dto.TextDTO;
 
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -40,9 +32,6 @@ public class TextControllerRest {
 
     @Autowired
     private TextService textService;
-
-    @Autowired
-    private DictionaryService dictionaryService;
     
     @GetMapping("/")
     public List<TextDTO> getTexts() {
@@ -78,15 +67,7 @@ public class TextControllerRest {
             .header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(profileImage);
     }
 
-    @GetMapping("/pendingWords")
-    public ResponseEntity<Word[]> getPendingWords(@RequestParam String text) {
-        TextDTO textDTO = new TextDTO(null, null, null, text, null, null, null, null, null, null);
-        Word [] pendingWords = textService.getPendingWords(textDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(pendingWords);
-    }
-    
-
-    @GetMapping("/{id}/SpanishText")       //MANTENIMIENTO
+    @GetMapping("/{id}/SpanishText")
     public ResponseEntity<String[][]> getTextSpanish(@PathVariable long id){
         TextDTO text = this.textService.getText(id);
         if (text == null){
@@ -96,30 +77,6 @@ public class TextControllerRest {
             // Devolver el Map con el mapeo
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-    }
-
-    @PostMapping("/createdWords")
-    public ResponseEntity<Word[]> createWords(@RequestBody Word[] words) {
-        if (words == null || words.length == 0) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Word[] savedWords = textService.save(words);
-
-        // Filtramos los que realmente se guardaron (no fueron null)
-        List<Word> nonNullWords = Arrays.stream(savedWords)
-                                        .filter(Objects::nonNull)
-                                        .collect(Collectors.toList());
-
-        if (nonNullWords.isEmpty()) {
-            // Ninguna palabra fue nueva (todas duplicadas)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Word[0]);
-        }
-
-        // Opcional: podrías construir un Location URI si lo necesitas
-        // Aquí devolvemos solo el array de palabras guardadas
-        return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(nonNullWords.toArray(new Word[0]));
     }
 
     /*@GetMapping("/{id}/EnglishText")
@@ -167,19 +124,7 @@ public class TextControllerRest {
             
             return ResponseEntity.status(HttpStatus.OK).body(map);
         }
-    }*/
-
-    @PostMapping("/words")          //Hacer un controlador a parte para las words.
-    public ResponseEntity<Word> postWord(@RequestBody Word word) {
-        Word newWord = dictionaryService.save(word);
-        if(newWord == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newWord.getId()).toUri();
-        return ResponseEntity.created(location).body(newWord);
-    }
-    
-
+    }*/    
     
 }
 
