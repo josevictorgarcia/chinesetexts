@@ -1,0 +1,117 @@
+<div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
+  <style>
+    span.hover-highlight:hover {
+      background-color: #fdecea; /* color suave relacionado con #c0392b */
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .text-xlarge {
+      font-size: 1.5rem;
+      line-height: 2;
+    }
+
+    .btn-back {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #c0392b; /* mismo color que el título */
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-back:hover {
+      background-color: #e74c3c; /* color más claro en hover */
+    }
+  </style>
+
+  <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
+    {{text.titleSpanish}}
+  </h1>
+
+  <div class="border rounded shadow-sm p-4">
+    <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+      <div>{{ text.creationDate | date:'mediumDate' }}</div>
+      <div><strong>Nivel:</strong> {{ text.level }}</div>
+    </div>
+
+    <img 
+      [src]="'/api/texts/' + text.id + '/image'" 
+      alt="{{ text.titleSpanish }}" 
+      class="img-fluid rounded mb-3" 
+      style="max-height: 250px; object-fit: cover;"
+    >
+
+    <h5 class="mt-4 text-primary">Texto Original (Chino)</h5>
+    <p class="text-xlarge" style="white-space: pre-line;">
+        <span 
+          *ngFor="let word of originalText; let i = index" 
+          class="hover-highlight"
+          data-bs-toggle="popover" 
+          triggers="focus" 
+          data-bs-placement="top" 
+          [attr.data-bs-content]="getPopoverHtml(i)">
+            {{ word }}
+        </span>
+    </p>
+
+
+    <h5 class="mt-4 text-success">Traducción (Español)</h5>
+    <p class="text-xlarge" style="white-space: pre-line;">
+        <span 
+          *ngFor="let sentence of translatedSpanishTextSeparatedBySentences; let i = index" 
+          class="hover-highlight"
+          data-bs-toggle="popover" 
+          triggers="focus" 
+          data-bs-placement="top" 
+          [attr.data-bs-content]="getTooltipHtml(i)">
+            {{ sentence }}
+        </span>
+    </p>
+
+    <!-- Botón Back -->
+    <div class="text-center mt-4">
+      <button class="btn-back" (click)="back();">Volver</button>
+    </div>
+  </div>
+</div>
+
+
+<!--<h3>Title: {{this.text.title}}</h3>
+<h3>Text: {{this.text.text}}</h3>
+<h3>Translation: {{this.text.translation}}</h3>
+<a (click)="back()">Back</a>-->
+
+<!--<div style="width: 100%; border: 1px solid black; border-radius: 6px; text-align: center; font-size: 30px;">
+    <div style=" width: 100%; position: sticky;">
+        <ul>
+            <li *ngFor="let key of objectKeys(translation)">
+                <p>{{ key }} -- {{ translation[key] }}</p>
+            </li>
+        </ul>
+    </div>
+    <div style="width: 100%; border-top: 1px solid black; border-bottom: 1px solid black;">
+        <ul>
+            <li *ngFor="let word of originalText; let i = index">
+                <p>{{ word }} -- {{ translatedText[i] }}</p>
+            </li>
+        </ul>
+    </div>
+    <div style=" width: 100%;">
+        <ul>
+            <li *ngFor="let word of originalText; let i = index">
+                <p>{{ word }} -- {{ translatedSpanishText[i] }}</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<form>
+    <input [(ngModel)]="this.word.chinese" name="chinese" type="text" placeholder="Enter chinese word">
+    <input [(ngModel)]="this.word.english" name="english" type="text" placeholder="Enter english translation">
+    <input [(ngModel)]="this.word.spanish" name="spanish" type="text" placeholder="Enter spanish translation">
+    <button (click)="addWord()">Add word</button>
+</form>
+
+<a (click)="back()">Back</a>-->

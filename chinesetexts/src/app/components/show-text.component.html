@@ -1,0 +1,30 @@
+<div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
+  <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">Textos</h1>
+
+  <div [routerLink]="'texts/' + text.id" *ngFor="let text of texts" class="border rounded shadow-sm mb-4 p-4">
+    <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+      <div>{{ text.creationDate | date:'mediumDate' }}</div>
+      <div><strong>Nivel:</strong> {{ text.level }}</div>
+    </div>
+    <h3 class="mb-3 text-dark fw-semibold">{{ text.titleSpanish }}</h3>
+    <img [src]="'/api/texts/' + text.id + '/image'" alt="{{ text.titleSpanish }}" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
+    <p>{{ text.spanishDescription }}</p>
+  </div>
+</div>
+
+
+<!--<h1>Add text:</h1>
+<form>
+
+  <textarea [(ngModel)]="this.text.title" name="title" rows="4" cols="50" placeholder="Title"></textarea>
+  <textarea [(ngModel)]="this.text.text" name="text" rows="4" cols="50" placeholder="Text"></textarea>
+  <textarea [(ngModel)]="this.text.translation" name="translation" rows="4" cols="50" placeholder="Translation"></textarea>
+  <button (click)="postText()">Post text</button>
+
+  <ul>
+    <li *ngFor="let text of this.texts">
+      <a [routerLink]="['/text-page', text.id]">Titulo: {{text.title}}</a>
+    </li>
+  </ul>
+
+</form>-->
