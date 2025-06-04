@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tesseract.demo.Model.Word;
 import com.tesseract.demo.Service.DictionaryService;
-import com.tesseract.demo.Service.TextService;
+import com.tesseract.demo.Service.WordService;
 import com.tesseract.demo.dto.TextDTO;
+import com.tesseract.demo.dto.WordDTO;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -28,40 +29,40 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 public class WordControllerRest {
 
     @Autowired
-    private TextService textService;
+    private WordService wordService;
 
     @Autowired
     private DictionaryService dictionaryService;
 
     @GetMapping("/pendingWords")
-    public ResponseEntity<Word[]> getPendingWords(@RequestParam String text) {
+    public ResponseEntity<WordDTO[]> getPendingWords(@RequestParam String text) {
         TextDTO textDTO = new TextDTO(null, null, null, text, null, null, null, null, null, null);
-        Word [] pendingWords = textService.getPendingWords(textDTO);
+        WordDTO [] pendingWords = wordService.getPendingWords(textDTO);
         return ResponseEntity.status(HttpStatus.OK).body(pendingWords);
     }
 
     @PostMapping("/createdWords")
-    public ResponseEntity<Word[]> createWords(@RequestBody Word[] words) {
+    public ResponseEntity<WordDTO[]> createWords(@RequestBody WordDTO[] words) {
         if (words == null || words.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        Word[] savedWords = textService.save(words);
+        WordDTO[] savedWords = wordService.save(words);
 
         // Filtramos los que realmente se guardaron (no fueron null)
-        List<Word> nonNullWords = Arrays.stream(savedWords)
+        List<WordDTO> nonNullWords = Arrays.stream(savedWords)
                                         .filter(Objects::nonNull)
                                         .collect(Collectors.toList());
 
         if (nonNullWords.isEmpty()) {
             // Ninguna palabra fue nueva (todas duplicadas)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Word[0]);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new WordDTO[0]);
         }
 
         // Opcional: podrías construir un Location URI si lo necesitas
         // Aquí devolvemos solo el array de palabras guardadas
         return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(nonNullWords.toArray(new Word[0]));
+                            .body(nonNullWords.toArray(new WordDTO[0]));
     }
 
     @PostMapping("/words")          //Hacer un controlador a parte para las words.

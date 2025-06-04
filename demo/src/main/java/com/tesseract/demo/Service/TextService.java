@@ -3,7 +3,6 @@ package com.tesseract.demo.Service;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.tesseract.demo.Model.Text;
-import com.tesseract.demo.Model.Word;
 import com.tesseract.demo.Repository.TextRepository;
-import com.tesseract.demo.Repository.WordRepository;
 import com.tesseract.demo.dto.TextDTO;
 import com.tesseract.demo.dto.TextMapper;
 
@@ -25,9 +22,6 @@ public class TextService {
     
     @Autowired
     private TextRepository textRepository;
-
-    @Autowired
-    private WordRepository wordRepository;
 
     @Autowired
     private DictionaryService dictionaryService;
@@ -54,22 +48,6 @@ public class TextService {
         } else{
             return toDTO(textRepository.save(newText));
         }
-    }
-
-    public Word save(Word word){
-        if(wordRepository.existsByChinese(word.getChinese())){
-            return null;
-        } else{
-            return wordRepository.save(word);
-        }
-    }
-
-    public Word[] save(Word[] words){
-        List<Word> newWords = new ArrayList<>();
-        for(Word word : words){
-            newWords.add(save(word));
-        }
-        return newWords.toArray(new Word[0]);
     }
 
     public void createTextImage(long id, InputStream inputStream, long size) {
@@ -100,19 +78,6 @@ public class TextService {
         }
     }
 
-    public Word[] getPendingWords(TextDTO text) {
-        List<String> textSegmented = jiebaService.segment(text.text());
-        List<Word> pendingWords = new ArrayList<>();
-
-        for (String word : textSegmented) {
-            if (word != null && !word.trim().isEmpty() && !wordRepository.existsByChinese(word)) {
-                pendingWords.add(new Word(word, null, null, null));
-            }
-        }
-        return pendingWords.toArray(new Word[0]);
-    }
-
-
     public String[][] getTextSpanish(TextDTO text){
         List<String> textSegmented = jiebaService.segment(text.text());
         List<String> words = dictionaryService.translateToSpanish(textSegmented);
@@ -137,4 +102,5 @@ public class TextService {
     private List<TextDTO> toDTOs(List<Text> texts) {
         return textMapper.toDTO(texts);
     }
+
 }
