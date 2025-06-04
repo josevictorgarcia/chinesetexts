@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TextPage } from './components/text-page.component';
 import { TextForm } from './components/text-form.component';
 import { Flashcards } from './components/flashcards.component';
+import { Flashcard } from './components/flashcard.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { Flashcards } from './components/flashcards.component';
     AppShowText,
     TextPage,
     TextForm,
-    Flashcards
+    Flashcards,
+    Flashcard,
   ],
   imports: [
     BrowserModule,
