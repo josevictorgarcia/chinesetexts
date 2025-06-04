@@ -30,6 +30,12 @@ public class Flashcard {
     public Flashcard() {
     }
 
+    public Flashcard(Word word, Text example, Collection collection){
+        this.word = word;
+        this.example = example;
+        this.collection = collection;
+    }
+
     public Flashcard(long id, Word word, Text example) {
         this.id = id;
         this.word = word;

@@ -27,6 +27,12 @@ public class Collection {
         this.flashcards = new ArrayList<>();
     }
 
+    public Collection(String title, LocalDate date, List<Flashcard> flashcards){
+        this.title = title;
+        this.date = date;
+        this.flashcards = flashcards;
+    }
+
     public Collection(long id, String title, LocalDate date, List<Flashcard> flashcards) {
         this.id = id;
         this.title = title;

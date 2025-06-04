@@ -2,6 +2,8 @@ package com.tesseract.demo.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
 
+import com.tesseract.demo.Model.Collection;
+import com.tesseract.demo.Model.Flashcard;
 import com.tesseract.demo.Model.Text;
 import com.tesseract.demo.Model.Word;
 
@@ -23,6 +27,12 @@ public class DatabaseInitializer {
 
     @Autowired
     TextService textService;
+
+    @Autowired
+    CollectionService collectionService;
+
+    @Autowired
+    FlashcardService flashcardService;
 
     @PostConstruct
     public void initializeDatabase(){
@@ -668,11 +678,35 @@ public class DatabaseInitializer {
             }
         }
 
+        Collection[] collections = new Collection[] { 
+            new Collection("Adjectives HSK1", 
+            LocalDate.of(2025, 5, 27), 
+            null
+            ),
+            new Collection("Nouns HSK3",
+            LocalDate.of(2025, 4, 3),
+            null
+            )                              
+        };
+
+        for(int i=0; i<collections.length; i++){
+            collectionService.save(collections[i]);
+        }
+
+        Flashcard flashcard1 = new Flashcard(words[0], texts[0], collections[1]);
+        Flashcard flashcard2 = new Flashcard(words[1], texts[1], collections[0]);
+        Flashcard flashcard3 = new Flashcard(words[2], texts[5], collections[1]);
+        Flashcard flashcard4 = new Flashcard(words[4], texts[2], collections[1]);
+
+        flashcardService.save(flashcard1);
+        flashcardService.save(flashcard2);
+        flashcardService.save(flashcard3);
+        flashcardService.save(flashcard4);
+
     }
 
     private void setImage(Text text, String classpathResource) throws IOException {
 		Resource image = new ClassPathResource(classpathResource);
 		text.setImage(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
 	}
-
 }
