@@ -36,6 +36,7 @@ public class User {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.language = language;
         if (roles == null) {
             this.setRoles(Collections.singletonList("USER"));
         } else {
