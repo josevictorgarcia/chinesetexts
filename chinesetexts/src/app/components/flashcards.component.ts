@@ -3,7 +3,7 @@ import { TextService } from '../sevices/textService';
 import { WordService } from '../sevices/wordService';
 import { Router } from '@angular/router';
 import { FlashcardService } from '../sevices/flashcardService';
-import { Collection } from '../model/Collection';
+import { Collection } from '../model/collection';
 
 @Component({
   selector: 'flashcards',

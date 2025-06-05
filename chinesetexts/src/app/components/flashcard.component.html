@@ -2,19 +2,22 @@
   <style>
     .carousel-item {
       padding: 20px;
-      text-align: center; /* Centrado del contenido de cada item */
+      text-align: center;
+      word-wrap: break-word;
     }
 
     .text-xlarge {
-      font-size: 1.5rem;
-      line-height: 2;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      word-break: break-word;
     }
 
     .chinese-word {
-      font-size: 4rem;
+      font-size: 3rem;
       font-weight: bold;
-      color: #c0392b; /* color rojo similar al título */
+      color: #c0392b;
       margin-bottom: 20px;
+      word-break: break-word;
     }
 
     .btn-back {
@@ -31,76 +34,85 @@
       background-color: #e74c3c;
     }
 
-    /* Estilo para las flechas (más grandes y visibles) */
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-      font-size: 2rem;  /* Aumenta el tamaño de las flechas */
-      color: #fff; /* Blanco para las flechas */
+      font-size: 2rem;
+      color: #fff;
     }
 
-    /* Estilo de los controles prev y next */
     .carousel-control-prev,
     .carousel-control-next {
-      background-color: rgba(192, 57, 43, 0.8); /* Fondo rojo más oscuro para mayor contraste */
+      background-color: rgba(192, 57, 43, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 10; /* Aseguramos que las flechas estén siempre encima */
-      width: 60px; /* Ancho de los controles */
-      height: 100%; /* Ajuste de altura al contenedor del carousel */
+      z-index: 10;
+      width: 60px;
+      height: 100%;
     }
 
     .carousel-control-prev {
-      border-right: 2px solid #c0392b; /* Borde a la derecha para separar */
+      border-right: 2px solid #c0392b;
     }
 
     .carousel-control-next {
-      border-left: 2px solid #c0392b; /* Borde a la izquierda para separar */
+      border-left: 2px solid #c0392b;
     }
 
-    /* Estilo de las flechas al pasar el ratón */
     .carousel-control-prev:hover,
     .carousel-control-next:hover {
-      background-color: rgba(192, 57, 43, 1); /* Fondo rojo más intenso al pasar el mouse */
+      background-color: rgba(192, 57, 43, 1);
     }
 
-    /* Ajuste de tamaño de las flechas para pantallas pequeñas */
-    @media (max-width: 767px) {
-      .carousel-control-prev-icon,
-      .carousel-control-next-icon {
-        font-size: 1.5rem;  /* Reduce el tamaño de las flechas en pantallas pequeñas */
-      }
-
-      .carousel-control-prev,
-      .carousel-control-next {
-        width: 50px;  /* Reducción de tamaño de los controles */
-      }
-    }
-
-    /* Asegurando que el carousel no se desborde en dispositivos pequeños */
-    @media (max-width: 767px) {
-      .carousel-inner {
-        padding: 0 15px;  /* Añade espacio a los lados para evitar desbordamientos */
-      }
-    }
-
-    /* Desactivación del comportamiento del scroll (prevención de scroll automático) */
-    #flashcardsCarousel {
-      pointer-events: auto; /* Garantiza que los eventos del mouse solo actúen sobre la zona clickeable */
-    }
-
-    /* Desactivar scroll para pasar al siguiente item */
     .carousel-inner {
       overflow: hidden;
     }
 
-    /* Flexbox para asegurar que los controles estén acoplados a la altura del carousel */
     .carousel {
       display: flex;
       justify-content: space-between;
-      align-items: stretch; /* Asegura que los controles tengan la misma altura */
+      align-items: stretch;
       position: relative;
+    }
+
+    .carousel-item .border {
+      max-width: 100%;
+      width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* Responsividad general */
+    @media (max-width: 768px) {
+      .text-xlarge {
+        font-size: 1rem;
+        line-height: 1.4;
+      }
+
+      .chinese-word {
+        font-size: 2rem;
+      }
+
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        font-size: 1.5rem;
+      }
+
+      .carousel-control-prev,
+      .carousel-control-next {
+        width: 50px;
+      }
+
+      .carousel-inner {
+        padding: 0 10px;
+      }
+    }
+
+    /* Extra protección para textos largos */
+    p, h5 {
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
   </style>
 
@@ -109,104 +121,48 @@
   </h1>
 
   <!-- Flashcards Carousel -->
-  <div id="flashcardsCarousel" class="carousel slide" data-bs-ride="false"> <!-- Desactivado auto-ride -->
+  <div id="flashcardsCarousel" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
-      
+
       <!-- Item 1 -->
-      <div class="carousel-item active">
-        <div class="border rounded shadow-sm p-4">
+      <div class="carousel-item" *ngFor="let flashcard of flashcards; let i = index" [class.active]="i === 0">
+
+        <div class="border rounded shadow-sm p-4 bg-light">
           <div class="chinese-word">
-            你好
+            {{ flashcard.word.chinese }}
           </div>
 
-          <!-- Traducción al Inglés -->
           <h5 class="mt-4 text-success">Traducción (Inglés)</h5>
           <p class="text-xlarge" style="white-space: pre-line;">
-            Hello
+            {{ flashcard.word.english }}
           </p>
 
-          <!-- Traducción al Español -->
           <h5 class="mt-4 text-danger">Traducción (Español)</h5>
           <p class="text-xlarge" style="white-space: pre-line;">
-            Hola
+            {{ flashcard.word.spanish }}
           </p>
 
-          <!-- Ejemplo en Chino -->
           <h5 class="mt-4 text-primary">Texto en Chino</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            你好，小林！
-          </p>
-        </div>
-      </div>
-
-      <!-- Item 2 -->
-      <div class="carousel-item">
-        <div class="border rounded shadow-sm p-4">
-          <div class="chinese-word">
-            谢谢
-          </div>
-
-          <!-- Traducción al Inglés -->
-          <h5 class="mt-4 text-success">Traducción (Inglés)</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            Thank you
-          </p>
-
-          <!-- Traducción al Español -->
-          <h5 class="mt-4 text-danger">Traducción (Español)</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            Gracias
-          </p>
-
-          <!-- Ejemplo en Chino -->
-          <h5 class="mt-4 text-primary">Texto en Chino</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            谢谢你帮我！
-          </p>
-        </div>
-      </div>
-
-      <!-- Item 3 -->
-      <div class="carousel-item">
-        <div class="border rounded shadow-sm p-4">
-          <div class="chinese-word">
-            再见
-          </div>
-
-          <!-- Traducción al Inglés -->
-          <h5 class="mt-4 text-success">Traducción (Inglés)</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            Goodbye
-          </p>
-
-          <!-- Traducción al Español -->
-          <h5 class="mt-4 text-danger">Traducción (Español)</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            Adiós
-          </p>
-
-          <!-- Ejemplo en Chino -->
-          <h5 class="mt-4 text-primary">Texto en Chino</h5>
-          <p class="text-xlarge" style="white-space: pre-line;">
-            再见，明天见！
+          <p class="text-xlarge" style="white-space: pre-line; margin: 30px;">
+            {{ flashcard.example.text }}
           </p>
         </div>
       </div>
 
     </div>
 
-    <!-- Controls para el Carousel -->
+    <!-- Controls -->
     <button class="carousel-control-prev" type="button" data-bs-target="#flashcardsCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+      <span class="visually-hidden">Anterior</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#flashcardsCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+      <span class="visually-hidden">Siguiente</span>
     </button>
   </div>
 
-  <!-- Botón Back -->
+  <!-- Botón Volver -->
   <div class="text-center mt-4">
     <button class="btn-back" onclick="window.history.back();">Volver</button>
   </div>

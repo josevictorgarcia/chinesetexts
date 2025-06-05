@@ -65,4 +65,12 @@ public class Flashcard {
     public void setExample(Text example) {
         this.example = example;
     }
+
+    public Collection getCollection(){
+        return collection;
+    }
+
+    public void setCollection(Collection collection){
+        this.collection = collection;
+    }
 }
