@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -22,21 +24,19 @@ public class Collection {
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flashcard> flashcards;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     
     public Collection() {
         this.flashcards = new ArrayList<>();
     }
 
-    public Collection(String title, LocalDate date, List<Flashcard> flashcards){
+    public Collection(String title, LocalDate date, User user, List<Flashcard> flashcards){
         this.title = title;
         this.date = date;
-        this.flashcards = flashcards;
-    }
-
-    public Collection(long id, String title, LocalDate date, List<Flashcard> flashcards) {
-        this.id = id;
-        this.title = title;
-        this.date = date;
+        this.user = user;
         this.flashcards = flashcards;
     }
 

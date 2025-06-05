@@ -2,18 +2,18 @@ package com.tesseract.demo.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tesseract.demo.Model.Collection;
 import com.tesseract.demo.Model.Flashcard;
 import com.tesseract.demo.Model.Text;
+import com.tesseract.demo.Model.User;
 import com.tesseract.demo.Model.Word;
 
 import jakarta.annotation.PostConstruct;
@@ -33,6 +33,12 @@ public class DatabaseInitializer {
 
     @Autowired
     FlashcardService flashcardService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+	private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void initializeDatabase(){
@@ -678,13 +684,24 @@ public class DatabaseInitializer {
             }
         }
 
+        User[] users = new User[]{
+            new User("victorgarciallorente15@gmail.com", "JV", passwordEncoder.encode("1234"), "es", "USER"),
+            new User("victorgarciallorente20@gmail.com", "J. Victor Garcia Llorente", passwordEncoder.encode("1234"), "es", "ADMIN")
+        };
+
+        for(int i=0; i<users.length; i++){
+            userService.save(users[i]);
+        }
+
         Collection[] collections = new Collection[] { 
             new Collection("Adjectives HSK1", 
             LocalDate.of(2025, 5, 27), 
+            users[0],
             null
             ),
             new Collection("Nouns HSK3",
             LocalDate.of(2025, 4, 3),
+            users[0],
             null
             )                              
         };
