@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from '../sevices/loginService';
 
 @Component({
   selector: 'header',
@@ -10,15 +12,34 @@ export class AppHeader {
     loginEmail = '';
     loginPassword = '';
 
+    @ViewChild('loginErrorModal', { static: true })
+    public loginErrorModal: TemplateRef<void> | undefined;
+    
+    constructor(
+      public loginService: LoginService, // Cambiado a público para acceder desde la plantilla
+      private router: Router
+    ) {}
 
     public login() {
       if (this.loginEmail && this.loginPassword) {
-        // Aquí iría la lógica para autenticar al usuario
-        console.log('Iniciando sesión con:', this.loginEmail, this.loginPassword);
-        alert('Iniciando sesión... (Aquí iría la lógica de autenticación)');
+        this.loginService.login(this.loginEmail, this.loginPassword).subscribe(
+        () => {
+          this.loginService.reqIsLogged();
+          this.toggleLoginForm(); // Cerrar el formulario de inicio de sesión
+        },
+        () => {
+          //this.modalService.open(this.loginErrorModal, { centered: true });
+          this.loginEmail = '';
+          this.loginPassword = '';
+        });
       } else {
         alert('Por favor, completa todos los campos.');
       }
+    }
+
+    public logout() {
+      this.loginService.logout()
+      this.router.navigate(['/']);
     }
 
     public toggleLoginForm() {
@@ -34,6 +55,10 @@ export class AppHeader {
       this.showLoginForm = false;
       this.loginEmail = '';
       this.loginPassword = '';
+    }
+
+    public isLogged(){
+      return this.loginService.isLogged();
     }
 
 }

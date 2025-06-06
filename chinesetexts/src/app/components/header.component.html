@@ -58,24 +58,24 @@
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">New Text</a></li>
         <li><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/flashcards'">Flashcards</a></li>
       </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul *ngIf="!showLoginForm && !isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
-          <a *ngIf="!showLoginForm" class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">
+          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">
             <i class="bi bi-person-fill me-1"></i> Registrarse
           </a>
         </li>
         
         <!-- Sección de Iniciar Sesión -->
         <li class="nav-item">
-          <a *ngIf="!showLoginForm" (click)="toggleLoginForm()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold" href="#">
+          <a (click)="toggleLoginForm()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold">
             <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
           </a>
         </li>
       </ul>
 
       <!-- Formulario de Login (solo visible si showLoginForm es true) -->
-      <div *ngIf="showLoginForm" class="login-form-container position-absolute top-50 start-50 translate-middle p-4 bg-light rounded-3 shadow-lg">
+      <div *ngIf="showLoginForm && !isLogged()" class="login-form-container position-absolute top-50 start-50 translate-middle p-4 bg-light rounded-3 shadow-lg">
         <h4 class="text-center mb-3">Iniciar Sesión</h4>
         <form (ngSubmit)="login()">
           <div class="mb-3">
@@ -92,6 +92,22 @@
           </div>
         </form>
       </div>
+
+      <ul *ngIf="isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <!-- Sección de Registrarse (sin cambios) -->
+        <li class="nav-item me-3">
+          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">
+            <i class="bi bi-person-fill me-1"></i> Perfil
+          </a>
+        </li>
+        
+        <!-- Sección de Iniciar Sesión -->
+        <li class="nav-item">
+          <a (click)="logout()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Cerrar Sesión
+          </a>
+        </li>
+      </ul>
       
     </div>
   </div>
