@@ -94,6 +94,18 @@ export class TextPage implements OnInit{
           if (popover) {
             popover.toggle();
           }
+
+          // Agregar el listener para el botón dentro del popover
+          setTimeout(() => {
+            const popoverButton = document.getElementById(`popover-button-${index}`);
+            if (popoverButton) {
+              popoverButton.addEventListener('click', (clickEvent) => {
+                // Llamar a la función addWord cuando se hace clic en el contenido del popover
+                this.addWord(this.originalText[index]);
+                clickEvent.stopPropagation(); // Evitar que el clic se propague al popover
+              });
+            }
+          }, 50);
         });
       });
 
@@ -167,7 +179,7 @@ export class TextPage implements OnInit{
         <div>
           <strong>Traducción:</strong> ${this.translatedSpanishText[i] || 'Sin traducción'}
           <br>
-          <em>Más información aquí</em>
+          <div class="btn btn-link" id="popover-button-${i}">Guardar</div>
         </div>
       `;
     }
@@ -179,9 +191,12 @@ export class TextPage implements OnInit{
         <div>
           <strong>Traducción:</strong> ${this.originalTextSeparatedBySentences[i] || 'Sin traducción'}
           <br>
-          <em>Más información aquí</em>
         </div>
       `;
+    }
+
+    addWord(word: string){
+      console.log(word);
     }
 
     back(){this.router.navigate(['/'])}
