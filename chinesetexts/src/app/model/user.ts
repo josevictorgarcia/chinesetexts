@@ -6,4 +6,5 @@ export interface User {
     name: string;
     language: string;
     collections: Collection[];
+    roles: string[];
 }

@@ -7,5 +7,6 @@ public record UserDTO (
     String email,
     String name,
     String language,
-    List<CollectionDTO> collections){
+    List<CollectionDTO> collections,
+    List<String> roles){
 }

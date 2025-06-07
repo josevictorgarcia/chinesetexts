@@ -57,8 +57,4 @@ export class AppHeader {
       this.loginPassword = '';
     }
 
-    public isLogged(){
-      return this.loginService.isLogged();
-    }
-
 }

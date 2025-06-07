@@ -40,10 +40,10 @@ export class LoginService{
         this.loggedInSubject.next(true);
       },
       (error) => {
-        if (error.status != 404) {
+        if (error.status !== 401) {
           console.error("Error when asking if logged: " + JSON.stringify(error));
         }
-          this.loggedInSubject.next(false);
+        this.loggedInSubject.next(false);
         }
       );
     }
@@ -54,6 +54,14 @@ export class LoginService{
 
     public isLogged() {
       return this.loggedInSubject.getValue();
+    }
+
+    public isRoleUser(): boolean {
+      return this.currentUser()?.roles.includes("USER") ?? false;
+    }
+
+    public isRoleAdmin(): boolean {
+      return this.currentUser()?.roles.includes("ADMIN") ?? false;
     }
 
 }

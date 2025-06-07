@@ -55,10 +55,10 @@
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#">HSK4</a></li>
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#">HSK5</a></li>
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#">HSK6</a></li>
-        <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">New Text</a></li>
-        <li><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/flashcards'">Flashcards</a></li>
+        <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/flashcards'">Flashcards</a></li>
+        <li *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">New Text</a></li>
       </ul>
-      <ul *ngIf="!showLoginForm && !isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul *ngIf="!showLoginForm && !loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
           <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">
@@ -75,7 +75,7 @@
       </ul>
 
       <!-- Formulario de Login (solo visible si showLoginForm es true) -->
-      <div *ngIf="showLoginForm && !isLogged()" class="login-form-container position-absolute top-50 start-50 translate-middle p-4 bg-light rounded-3 shadow-lg">
+      <div *ngIf="showLoginForm && !loginService.isLogged()" class="login-form-container position-absolute top-50 start-50 translate-middle p-4 bg-light rounded-3 shadow-lg">
         <h4 class="text-center mb-3">Iniciar Sesión</h4>
         <form (ngSubmit)="login()">
           <div class="mb-3">
@@ -93,7 +93,7 @@
         </form>
       </div>
 
-      <ul *ngIf="isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul *ngIf="loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
           <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">

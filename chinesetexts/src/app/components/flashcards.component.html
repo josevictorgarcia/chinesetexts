@@ -33,20 +33,27 @@
     Colecciones de Flashcards
   </h1>
 
+  <div *ngIf="loginService.isLogged()">
   <!-- Botón para crear nueva colección -->
-  <div class="text-center mb-4">
-    <button class="btn-create">
-      Crear Nueva Colección
-    </button>
+    <div class="text-center mb-4">
+      <button class="btn-create">
+        Crear Nueva Colección
+      </button>
+    </div>
+
+    <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
+      <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+        <!-- Aquí muestras la fecha de creación y el número de flashcards -->
+        <div><strong>Creada:</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
+        <!--<div><strong>Número de Flashcards:</strong> {{ collection.flashcards?.length || 0 }}</div>-->
+      </div>
+      <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
+    </div>
+
   </div>
 
-  <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
-    <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
-      <!-- Aquí muestras la fecha de creación y el número de flashcards -->
-      <div><strong>Creada:</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
-      <!--<div><strong>Número de Flashcards:</strong> {{ collection.flashcards?.length || 0 }}</div>-->
-    </div>
-    <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
+  <div *ngIf="!loginService.isLogged()" class="text-center my-4">
+      Es necesario iniciar sesión para acceder a las colecciones de flashcards.
   </div>
 
   <!-- Botón volver (opcional) -->
