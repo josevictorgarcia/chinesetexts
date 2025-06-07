@@ -9,9 +9,9 @@ import com.tesseract.demo.Model.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    UserDTO toDTO(User word);
+    UserDTO toDTO(User user);
 
-    List<UserDTO> toDTO(List<User> words);
+    List<UserDTO> toDTO(List<User> users);
 
     User toDomain(UserDTO userDTO);
 

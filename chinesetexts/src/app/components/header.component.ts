@@ -11,6 +11,7 @@ export class AppHeader {
     showLoginForm = false;
     loginEmail = '';
     loginPassword = '';
+    messageError = '';
 
     @ViewChild('loginErrorModal', { static: true })
     public loginErrorModal: TemplateRef<void> | undefined;
@@ -31,9 +32,10 @@ export class AppHeader {
           //this.modalService.open(this.loginErrorModal, { centered: true });
           this.loginEmail = '';
           this.loginPassword = '';
+          this.messageError = 'Credenciales incorrectas. Por favor, intenta de nuevo.'
         });
       } else {
-        alert('Por favor, completa todos los campos.');
+        this.messageError = 'Por favor, completa todos los campos.';
       }
     }
 
@@ -48,6 +50,7 @@ export class AppHeader {
       if (!this.showLoginForm) {
         this.loginEmail = '';
         this.loginPassword = '';
+        this.messageError = '';
       }
     }
 
@@ -55,6 +58,7 @@ export class AppHeader {
       this.showLoginForm = false;
       this.loginEmail = '';
       this.loginPassword = '';
+      this.messageError = '';
     }
 
 }

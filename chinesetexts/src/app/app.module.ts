@@ -13,6 +13,7 @@ import { TextPage } from './components/text-page.component';
 import { TextForm } from './components/text-form.component';
 import { Flashcards } from './components/flashcards.component';
 import { FlashcardPage } from './components/flashcard.component';
+import { UserForm } from './components/user-form.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FlashcardPage } from './components/flashcard.component';
     TextForm,
     Flashcards,
     FlashcardPage,
+    UserForm
   ],
   imports: [
     BrowserModule,

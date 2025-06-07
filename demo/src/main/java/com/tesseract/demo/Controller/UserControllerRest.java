@@ -1,6 +1,7 @@
 package com.tesseract.demo.Controller;
 
 
+import java.net.URI;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.tesseract.demo.Service.UserService;
 import com.tesseract.demo.dto.UserDTO;
+import com.tesseract.demo.dto.UserWithPasswordDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,5 +47,16 @@ public class UserControllerRest {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
 		}
 	}
+
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> postUser(@RequestBody UserWithPasswordDTO user) {
+        UserDTO newUser = userService.save(user);
+        if(newUser == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newUser.id()).toUri();
+        return ResponseEntity.created(location).body(newUser);
+    }
+    
     
 }

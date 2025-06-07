@@ -25,7 +25,7 @@
 
     @media (min-width: 992px) {
       .login-form-container {
-        margin-top: 90px;
+        margin-top: 140px;
       }
     }
 
@@ -61,7 +61,7 @@
       <ul *ngIf="!showLoginForm && !loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
-          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#">
+          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#" [routerLink]="'/users/new'">
             <i class="bi bi-person-fill me-1"></i> Registrarse
           </a>
         </li>
@@ -85,6 +85,9 @@
           <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
             <input [(ngModel)]="loginPassword" name="password" type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required />
+          </div>
+          <div class="text-danger mb-3 text-center">
+            {{ messageError }}
           </div>
           <div class="d-grid gap-2">
             <button type="submit" class="btn btn-danger">Iniciar Sesión</button>
