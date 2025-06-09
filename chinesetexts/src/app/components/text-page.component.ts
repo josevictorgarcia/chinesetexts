@@ -46,6 +46,9 @@ export class TextPage implements OnInit{
     originalTextSeparatedBySentences: string[] = [];
     translatedSpanishTextSeparatedBySentences: string[] = [];
 
+    showTextSplitIntoWords = true;
+    showOriginalText = true;
+
   constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute){}
 
   /* ngOnInit(): void {
@@ -195,8 +198,29 @@ export class TextPage implements OnInit{
       `;
     }
 
+    getTooltipHtmlOriginal(i: number): string {
+      // Aquí defines el HTML que quieres mostrar en el tooltip
+      // Por ejemplo:
+      return `
+        <div>
+          <strong>Traducción:</strong> ${this.translatedSpanishTextSeparatedBySentences[i] || 'Sin traducción'}
+          <br>
+        </div>
+      `;
+    }
+
     addWord(word: string){
       console.log(word);
+    }
+
+    changeSplit(){
+      this.showTextSplitIntoWords = !this.showTextSplitIntoWords;
+      this.init();
+    }
+
+    changeTranslation(){
+      this.showOriginalText = !this.showOriginalText;
+      this.init();
     }
 
     back(){this.router.navigate(['/'])}

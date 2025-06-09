@@ -43,32 +43,81 @@
       style="max-height: 250px; object-fit: cover;"
     >
 
-    <h5 class="mt-4 text-primary">Texto Original (Chino)</h5>
-    <p class="text-xlarge" style="white-space: pre-line;">
-        <span 
-          *ngFor="let word of originalText; let i = index" 
-          class="hover-highlight"
-          data-bs-toggle="popover" 
-          triggers="focus" 
-          data-bs-placement="top" 
-          [attr.data-bs-content]="getPopoverHtml(i)">
-            {{ word }}
-        </span>
-    </p>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="toggleOriginalText" (change)="changeTranslation()">
+      <label class="form-check-label" for="toggleOriginalText">
+        Ver texto traducido
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changeSplit()">
+      <label class="form-check-label" for="toggleSplitWords">
+        Ver texto desglosado por frases
+      </label>
+    </div>
+    
+
+    <div *ngIf="showTextSplitIntoWords">
+      <div *ngIf="showOriginalText">
+        <h5 class="mt-4 text-primary">Texto desglosado por palabras</h5>
+        <div class="text-muted my-4">
+            Haz click sobre una palabra para ver su traducción.
+        </div>
+        <p class="text-xlarge" style="white-space: pre-line;">
+            <span 
+              *ngFor="let word of originalText; let i = index" 
+              class="hover-highlight"
+              data-bs-toggle="popover" 
+              triggers="focus" 
+              data-bs-placement="top" 
+              [attr.data-bs-content]="getPopoverHtml(i)">
+                {{ word }}
+            </span>
+        </p>
+      </div>
+      <div *ngIf="!showOriginalText">
+        <h5 class="mt-4 text-primary">Texto traducido</h5>
+        <div class="text-muted my-4">
+            Mostrando el texto en español:
+        </div>
+        <p class="text-xlarge" style="white-space: pre-line;">
+            <span>
+                {{ text.spanishTranslation }}
+            </span>
+        </p>
+      </div>
+    </div>
 
 
-    <h5 class="mt-4 text-success">Traducción (Español)</h5>
-    <p class="text-xlarge" style="white-space: pre-line;">
-        <span 
-          *ngFor="let sentence of translatedSpanishTextSeparatedBySentences; let i = index" 
-          class="hover-highlight"
-          data-bs-toggle="popover" 
-          triggers="focus" 
-          data-bs-placement="top" 
-          [attr.data-bs-content]="getTooltipHtml(i)">
-            {{ sentence }}
-        </span>
-    </p>
+    <div *ngIf="!showTextSplitIntoWords">
+      <h5 class="mt-4 text-success">Texto desglosado por frases</h5>
+      <div class="text-muted my-4">
+          Haz click sobre una frase para ver su traducción.
+      </div>
+      <p *ngIf="showOriginalText" class="text-xlarge" style="white-space: pre-line;">
+          <span 
+            *ngFor="let sentence of originalTextSeparatedBySentences; let i = index" 
+            class="hover-highlight"
+            data-bs-toggle="popover" 
+            triggers="focus" 
+            data-bs-placement="top" 
+            [attr.data-bs-content]="getTooltipHtmlOriginal(i)">
+              {{ sentence }}
+          </span>
+      </p>
+      <p *ngIf="!showOriginalText" class="text-xlarge" style="white-space: pre-line;">
+          <span 
+            *ngFor="let sentence of translatedSpanishTextSeparatedBySentences; let i = index" 
+            class="hover-highlight"
+            data-bs-toggle="popover" 
+            triggers="focus" 
+            data-bs-placement="top" 
+            [attr.data-bs-content]="getTooltipHtml(i)">
+              {{ sentence }}
+          </span>
+      </p>
+    </div>
 
     <!-- Botón Back -->
     <div class="text-center mt-4">

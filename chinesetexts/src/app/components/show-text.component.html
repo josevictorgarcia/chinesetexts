@@ -1,7 +1,9 @@
 <div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">Textos</h1>
 
-  <div [routerLink]="'texts/' + text.id" *ngFor="let text of texts" class="border rounded shadow-sm mb-4 p-4">
+  <div class="text-center my-4">Haz click sobre uno de los siguientes textos para comenzar a leer.</div>
+
+  <div [routerLink]="'texts/' + text.id" *ngFor="let text of texts" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;">
     <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
       <div>{{ text.creationDate | date:'mediumDate' }}</div>
       <div><strong>Nivel:</strong> {{ text.level }}</div>
