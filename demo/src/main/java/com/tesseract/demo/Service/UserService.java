@@ -52,7 +52,15 @@ public class UserService {
         return toDTO(userRepository.findByEmail(email).orElseThrow());
     }
 
+    public User findUserByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow();
+    }
+
     public User toDomain(UserWithPasswordDTO user){
         return userWithPasswordMapper.toDomain(user);
+    }
+
+    public User toDomain(UserDTO userDTO){
+        return userMapper.toDomain(userDTO);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tesseract.demo.Model.Collection;
+import com.tesseract.demo.Model.User;
 import com.tesseract.demo.Repository.CollectionRepository;
 import com.tesseract.demo.dto.CollectionDTO;
 import com.tesseract.demo.dto.CollectionMapper;
@@ -20,9 +21,17 @@ public class CollectionService {
     @Autowired
     private CollectionMapper collectionMapper;
 
+    @Autowired
+    private UserService userService;
+
     public Collection save(Collection collection){
         return collectionRepository.save(collection);
     }
+
+    /*public CollectionDTO save(CollectionDTO collection){
+        Collection newCollection = toDomain(collection);
+
+    }*/
 
     public Collection getCollection(long id){
         Optional<Collection> collection = collectionRepository.findById(id);
@@ -33,8 +42,21 @@ public class CollectionService {
         }
     }
 
+    public CollectionDTO toDTO(Collection collection){
+        return collectionMapper.toDTO(collection);
+    }
+
+    public Collection toDomain(CollectionDTO collectionDTO){
+        return collectionMapper.toDomain(collectionDTO);
+    }
+
     public List<CollectionDTO> getAllCollections(){
         return toDTOs(collectionRepository.findAllByOrderByDateDesc());
+    }
+
+    public List<CollectionDTO> findByUserOrderByDateDesc(String email){
+        User user = userService.findUserByEmail(email);
+        return toDTOs(collectionRepository.findByUserOrderByDateDesc(user));
     }
 
     private List<CollectionDTO> toDTOs(List<Collection> collections){

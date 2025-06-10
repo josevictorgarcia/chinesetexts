@@ -36,10 +36,31 @@
   <div *ngIf="loginService.isLogged()">
   <!-- Botón para crear nueva colección -->
     <div class="text-center mb-4">
-      <button class="btn-create">
+      <button class="btn-create" (click)="formCreateCollection()">
         Crear Nueva Colección
       </button>
     </div>
+
+    <form *ngIf="displayFormCreateCollection" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="titleEnglish">Nombre de la colección</label>
+        <input 
+          id="name" 
+          name="name" 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="name" 
+          required 
+          placeholder="Ingresa el nombre de la colección">
+      </div>
+
+      <div class="text-center mt-4">
+        <button 
+          class="btn-create">
+          Crear
+        </button>
+      </div>
+    </form>
 
     <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
       <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">

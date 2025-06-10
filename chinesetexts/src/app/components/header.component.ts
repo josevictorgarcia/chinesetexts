@@ -25,8 +25,9 @@ export class AppHeader {
       if (this.loginEmail && this.loginPassword) {
         this.loginService.login(this.loginEmail, this.loginPassword).subscribe(
         () => {
-          this.loginService.reqIsLogged();
-          this.toggleLoginForm(); // Cerrar el formulario de inicio de sesión
+          this.loginService.reqIsLogged().subscribe(
+            () => this.toggleLoginForm() // Cerrar el formulario de inicio de sesión
+          )
         },
         () => {
           //this.modalService.open(this.loginErrorModal, { centered: true });

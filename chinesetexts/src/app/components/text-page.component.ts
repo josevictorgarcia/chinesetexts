@@ -230,7 +230,7 @@ export class TextPage implements OnInit{
           this.collections = currentUser.collections;
           this.showAddWordSection = true;
         } else {
-          this.showError("Debes crear una colección desde el apartado de 'flashcards' para comenzar a guardar palabras")
+          this.showError("Debes crear una colección desde el apartado de 'flashcards' para comenzar a guardar palabras. Si el error persiste, recarga la página e inténtalo de nuevo.")
         }
       } else {
         this.showError("Debes iniciar sesión para guardar palabras.")
