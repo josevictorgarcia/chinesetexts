@@ -3,6 +3,7 @@ import { TextService } from '../sevices/textService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Text } from '../model/text'
 import { Word } from '../model/word';
+import { LoginService } from '../sevices/loginService';
 declare var bootstrap: any;
 
 @Component({
@@ -49,7 +50,10 @@ export class TextPage implements OnInit{
     showTextSplitIntoWords = true;
     showOriginalText = true;
 
-  constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute){}
+    showErrorModal: boolean = false;
+    errorMessage: string = '';
+
+  constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService){}
 
   /* ngOnInit(): void {
     let id = this.activatedRoute.snapshot.params['id']
@@ -211,6 +215,25 @@ export class TextPage implements OnInit{
 
     addWord(word: string){
       console.log(word);
+      if(this.loginService.isLogged()){
+        const currentUser = this.loginService.currentUser();
+        if (currentUser?.collections && Array.isArray(currentUser.collections) && currentUser.collections.length > 0) {
+          console.log(this.loginService.currentUser()?.collections);
+        } else {
+          this.showError("Debes crear una colección desde el apartado de 'flashcards' para comenzar a guardar palabras")
+        }
+      } else {
+        this.showError("Debes iniciar sesión para guardar palabras.")
+      }
+    }
+
+    showError(message: string) {
+      this.errorMessage = message;
+      this.showErrorModal = true;
+    }
+
+    closeErrorModal() {
+      this.showErrorModal = false;
     }
 
     changeSplit(){

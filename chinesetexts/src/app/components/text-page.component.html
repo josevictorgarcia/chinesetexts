@@ -24,6 +24,12 @@
     .btn-back:hover {
       background-color: #e74c3c; /* color más claro en hover */
     }
+
+    /* Estilo para el modal de error */
+    .modal-content {
+      background-color: #f8d7da; /* fondo de error */
+      color: #721c24; /* color del texto de error */
+    }
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
@@ -56,8 +62,7 @@
         Ver texto desglosado por frases
       </label>
     </div>
-    
-
+ 
     <div *ngIf="showTextSplitIntoWords">
       <div *ngIf="showOriginalText">
         <h5 class="mt-4 text-primary">Texto desglosado por palabras</h5>
@@ -118,49 +123,25 @@
           </span>
       </p>
     </div>
-
     <!-- Botón Back -->
     <div class="text-center mt-4">
       <button class="btn-back" (click)="back();">Volver</button>
     </div>
   </div>
+
+  <!-- Modal de Error -->
+  <div id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" *ngIf="showErrorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">Error</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeErrorModal()"></button>
+        </div>
+        <div class="modal-body">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
-
-
-<!--<h3>Title: {{this.text.title}}</h3>
-<h3>Text: {{this.text.text}}</h3>
-<h3>Translation: {{this.text.translation}}</h3>
-<a (click)="back()">Back</a>-->
-
-<!--<div style="width: 100%; border: 1px solid black; border-radius: 6px; text-align: center; font-size: 30px;">
-    <div style=" width: 100%; position: sticky;">
-        <ul>
-            <li *ngFor="let key of objectKeys(translation)">
-                <p>{{ key }} -- {{ translation[key] }}</p>
-            </li>
-        </ul>
-    </div>
-    <div style="width: 100%; border-top: 1px solid black; border-bottom: 1px solid black;">
-        <ul>
-            <li *ngFor="let word of originalText; let i = index">
-                <p>{{ word }} -- {{ translatedText[i] }}</p>
-            </li>
-        </ul>
-    </div>
-    <div style=" width: 100%;">
-        <ul>
-            <li *ngFor="let word of originalText; let i = index">
-                <p>{{ word }} -- {{ translatedSpanishText[i] }}</p>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<form>
-    <input [(ngModel)]="this.word.chinese" name="chinese" type="text" placeholder="Enter chinese word">
-    <input [(ngModel)]="this.word.english" name="english" type="text" placeholder="Enter english translation">
-    <input [(ngModel)]="this.word.spanish" name="spanish" type="text" placeholder="Enter spanish translation">
-    <button (click)="addWord()">Add word</button>
-</form>
-
-<a (click)="back()">Back</a>-->
