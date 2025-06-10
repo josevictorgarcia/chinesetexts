@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Text } from '../model/text'
 import { Word } from '../model/word';
 import { LoginService } from '../sevices/loginService';
+import { Collection } from '../model/collection';
+import { FlashcardService } from '../sevices/flashcardService';
 declare var bootstrap: any;
 
 @Component({
@@ -51,9 +53,14 @@ export class TextPage implements OnInit{
     showOriginalText = true;
 
     showErrorModal: boolean = false;
+    showSuccessModal: boolean = false;
     errorMessage: string = '';
+    successMessage: string = '';
+    collections: Collection[] = [];
+    wordToAdd: string = '';
+    showAddWordSection: boolean = false;
 
-  constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService){}
+  constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService, private flashcardService:FlashcardService){}
 
   /* ngOnInit(): void {
     let id = this.activatedRoute.snapshot.params['id']
@@ -71,6 +78,7 @@ export class TextPage implements OnInit{
       const id = this.activatedRoute.snapshot.params['id'];
       this.getText(id);
       this.getSpanishText(id);
+      this.initAddWordSection();
     }
 
     private initPopovers() {
@@ -214,11 +222,13 @@ export class TextPage implements OnInit{
     }
 
     addWord(word: string){
-      console.log(word);
+      this.initAddWordSection();
       if(this.loginService.isLogged()){
         const currentUser = this.loginService.currentUser();
         if (currentUser?.collections && Array.isArray(currentUser.collections) && currentUser.collections.length > 0) {
-          console.log(this.loginService.currentUser()?.collections);
+          this.wordToAdd = word;
+          this.collections = currentUser.collections;
+          this.showAddWordSection = true;
         } else {
           this.showError("Debes crear una colección desde el apartado de 'flashcards' para comenzar a guardar palabras")
         }
@@ -227,13 +237,48 @@ export class TextPage implements OnInit{
       }
     }
 
+    saveWordToCollection(collectionId: number | undefined, word: string){
+      if(collectionId){
+        const id = this.activatedRoute.snapshot.params['id'];
+        this.flashcardService.putWordToCollection(collectionId, word, id).subscribe(
+          (message) => {
+            console.log(message);
+            this.initAddWordSection();
+            this.showSuccess('Palabra guardada con éxito');
+          },
+          (error) => this.showError("Word could not be added to collection")
+        )
+      } else {
+        this.showError("Error inesperado al añadir la palabra")
+      }
+    }
+
+    private initAddWordSection(){
+      this.showErrorModal = false;
+      this.showSuccessModal = false;
+      this.errorMessage = '';
+      this.successMessage = '';
+      this.collections = [];
+      this.wordToAdd = '';
+      this.showAddWordSection = false;
+    }
+
     showError(message: string) {
       this.errorMessage = message;
       this.showErrorModal = true;
     }
 
+    showSuccess(message: string){
+      this.successMessage = message;
+      this.showSuccessModal = true;
+    }
+
     closeErrorModal() {
       this.showErrorModal = false;
+    }
+
+    closeSuccessModal(){
+      this.showSuccessModal = false;
     }
 
     changeSplit(){
@@ -247,53 +292,5 @@ export class TextPage implements OnInit{
     }
 
     back(){this.router.navigate(['/'])}
-
-    /*private init(): void {
-      this.id = this.activatedRoute.snapshot.params['id']
-      this.getEnglishText();
-      this.getSpanishText();
-      this.getTranslation();
-    }
-
-    private getEnglishText(){
-      this.textService.getEnglishText(this.id).subscribe(
-        (data) => {this.originalText = data[0]; this.translatedText = data[1]},
-        (error) => console.error("Error loading the text and its translation to English", error)
-      )
-    }
-
-    private getSpanishText(){
-      this.textService.getSpanishText(this.id).subscribe(
-        (data) => {this.originalText = data[0]; this.translatedSpanishText = data[1]},
-        (error) => console.error("Error loading the text and its translation to Spanish", error)
-      )
-    }
-
-    private getTranslation(){
-      this.textService.getTranslation(this.id).subscribe(
-        (translation) => this.translation = translation,
-        (error) => console.error("Error getting the text translation", error)
-      )
-    }
-
-    private clearForm(){
-      this.word.chinese = "";
-      this.word.english = "";
-      this.word.spanish = "";
-    }
-
-    addWord(){
-      this.textService.postWord(this.word).subscribe(
-        () => {
-          this.clearForm(); 
-          this.init()},
-        (error) => console.error("Error creating a new word", error)
-      )
-    }
-
-
-    objectKeys(obj: any): string[] {
-      return Object.keys(obj);
-    }*/
   
 }

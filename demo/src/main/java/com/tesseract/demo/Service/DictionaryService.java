@@ -54,6 +54,15 @@ public class DictionaryService {
         }
     }
 
+    public Word getWord(String chinese){
+        Optional<Word> word = wordRepository.findByChinese(chinese);
+        if(word.isPresent()){
+            return word.get();
+        } else {
+            return null;
+        }
+    }
+
     public List<String> translateToEnglish(List<String> chineseText){
         List<String> translatedText = new ArrayList<>();
         for(String word : chineseText){

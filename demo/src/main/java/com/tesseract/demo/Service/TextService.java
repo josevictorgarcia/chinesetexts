@@ -65,6 +65,15 @@ public class TextService {
         }
     }
 
+    public Text findText(long id){
+        Optional<Text> text = this.textRepository.findById(id);
+        if(text.isPresent()){
+            return text.get();
+        } else {
+            return null;
+        }
+    }
+
     public List<TextDTO> getTextsOrderByCreationDateDesc(){
         return toDTOs(textRepository.findAllByOrderByCreationDateDesc());
     }

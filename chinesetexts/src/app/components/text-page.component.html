@@ -30,6 +30,11 @@
       background-color: #f8d7da; /* fondo de error */
       color: #721c24; /* color del texto de error */
     }
+
+    .modal-success{
+      background-color: #d4edda;
+      color: #155724;
+    }
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
@@ -142,6 +147,42 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" *ngIf="showSuccessModal">
+    <div class="modal-dialog">
+      <div class="modal-content modal-success">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeSuccessModal()"></button>
+        </div>
+        <div class="modal-body">
+          {{ successMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showAddWordSection" style="margin-top: 50px;">
+
+    <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
+      Mis colecciones:
+    </h1>
+
+    <div class="text-center my-4">
+      Elige la colección en la que deseas guardar '{{wordToAdd}}'.
+    </div>
+
+    <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" (click)="saveWordToCollection(collection.id, wordToAdd)">
+      <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+        <!-- Aquí muestras la fecha de creación y el número de flashcards -->
+        <div><strong>Creada:</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
+        <!--<div><strong>Número de Flashcards:</strong> {{ collection.flashcards?.length || 0 }}</div>-->
+      </div>
+      <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
+    </div>
+
   </div>
 
 </div>

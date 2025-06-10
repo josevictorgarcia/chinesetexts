@@ -20,4 +20,9 @@ export class FlashcardService{
         return this.httpClient.get<Flashcard[]>(`${BASE_URL}${id}`);
     }
     
+    putWordToCollection(collectionId: number, word: string, textId: number): Observable<String>{
+        const params = new HttpParams().set('chinese', word).set('textId', textId.toString()); 
+        return this.httpClient.put<String>(`${BASE_URL}${collectionId}`, {}, { params, responseType: 'text' as 'json' });
+    }
+
 }
