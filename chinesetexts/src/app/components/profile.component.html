@@ -1,0 +1,169 @@
+<div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
+  <style>
+    .form-label {
+      font-weight: bold;
+      color: #c0392b;
+    }
+
+    .form-control:disabled {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+    .btn-edit, .btn-save, .btn-cancel {
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+
+    .btn-edit {
+      background-color: #f39c12;
+      color: white;
+      border: none;
+    }
+
+    .btn-edit:hover {
+      background-color: #f1c40f;
+    }
+
+    .btn-save {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+    }
+
+    .btn-save:hover {
+      background-color: #2ecc71;
+    }
+
+    .btn-cancel {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+    }
+
+    .btn-cancel:hover {
+      background-color: #e74c3c;
+    }
+
+    .profile-title {
+      font-weight: 700;
+      font-size: 2rem;
+      color: #c0392b;
+    }
+
+    .form-section {
+      background-color: #f8f9fa;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-back {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #c0392b;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-back:hover {
+      background-color: #e74c3c;
+    }
+  </style>
+
+  <h1 class="text-center mb-5 profile-title">Perfil de Usuario</h1>
+
+  <form class="form-section" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Correo electrónico</label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="user.email"
+        name="email"
+        [disabled]="true"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="user.name"
+        name="name"
+        [disabled]="!editMode"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Contraseña actual</label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="user.password"
+        name="oldPassword"
+        [disabled]="!editMode"
+        placeholder="Introduzca la contraseña actual"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Nueva contraseña</label>
+      <input
+        type="password"
+        class="form-control"
+        [(ngModel)]="user.newPassword"
+        name="newPassword"
+        [disabled]="!editMode"
+        placeholder="Introduzca la nueva contraseña"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label">Idioma</label>
+      <select
+        class="form-control"
+        [(ngModel)]="user.language"
+        name="language"
+        [disabled]="!editMode"
+      >
+        <option value="es">Español</option>
+        <option value="en">Inglés</option>
+      </select>
+    </div>
+
+    <div class="text-center">
+      <button
+        *ngIf="!editMode"
+        type="button"
+        class="btn-edit"
+        (click)="editMode = true"
+      >
+        Editar
+      </button>
+
+      <div *ngIf="editMode">
+        <button type="submit" class="btn-save">Guardar</button>
+        <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancelar</button>
+      </div>
+
+      <div style="margin-top: 10px;" *ngIf="textError" class="text-danger mb-3 text-center">
+        Las contraseñas no coinciden. Se actualizó solo el nombre y el idioma.
+      </div>
+      <div style="margin-top: 10px;" *ngIf="textSuccess" class="text-success mb-3 text-center">
+        El perfil se actualizó correctamente.
+      </div>
+    </div>
+  </form>
+
+  <div class="text-center mt-4">
+    <button class="btn-back" (click)="back()">Volver</button>
+  </div>
+</div>

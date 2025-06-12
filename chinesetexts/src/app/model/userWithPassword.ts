@@ -5,6 +5,7 @@ export interface UserWithPassword {
     email: string;
     name: string;
     password: string;
+    newPassword?: string;
     language: string;
     collections: Collection[];
     roles: string[];

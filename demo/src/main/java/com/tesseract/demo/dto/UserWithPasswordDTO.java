@@ -9,5 +9,6 @@ public record UserWithPasswordDTO (
     String language,
     List<CollectionDTO> collections,
     List<String> roles,
-    String password){
+    String password,
+    String newPassword){
 }

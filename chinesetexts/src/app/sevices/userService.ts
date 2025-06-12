@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { User } from "../model/user";
 import { Observable } from "rxjs";
@@ -15,5 +15,15 @@ export class UserService{
     
     postUser(user: UserWithPassword): Observable<User> {
         return this.httpClient.post<User>(`${BASE_URL}`, user);
+    }
+
+    getUser(email: string): Observable<UserWithPassword>{
+        const params = new HttpParams().set('email', email);
+        return this.httpClient.get<UserWithPassword>(`${BASE_URL}`, { params });
+    }
+
+    putUser(user: UserWithPassword): Observable<UserWithPassword>{
+        const email = encodeURIComponent(user.email);
+        return this.httpClient.put<UserWithPassword>(`${BASE_URL}${email}`, user);
     }
 }

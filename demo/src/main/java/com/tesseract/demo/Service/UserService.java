@@ -1,5 +1,7 @@
 package com.tesseract.demo.Service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,24 @@ public class UserService {
         }
     }
 
+    public UserWithPasswordDTO save(String email, UserWithPasswordDTO user){
+        Optional<User> userToUpdate = userRepository.findByEmail(email);
+        if(userToUpdate.isPresent()){
+            if(!user.name().isEmpty()){ 
+                userToUpdate.get().setName(user.name());
+            }
+            if(!user.language().isEmpty()){
+                userToUpdate.get().setLanguage(user.language());
+            }
+            if(!user.newPassword().isEmpty() && passwordEncoder.matches(user.password(), userToUpdate.get().getPassword())){
+                userToUpdate.get().setPassword(passwordEncoder.encode(user.newPassword()));
+            }
+            return userWithPasswordMapper.toDTO(userRepository.save(userToUpdate.get()));
+        } else{
+            return null;
+        }
+    }
+
     public UserDTO findById (long id) {
         return toDTO(userRepository.findById(id).orElseThrow());
     }
@@ -54,6 +74,10 @@ public class UserService {
 
     public User findUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow();
+    }
+
+    public UserWithPasswordDTO findUserWithPasswordDTOByEmail(String email){
+        return userWithPasswordMapper.toDTO(userRepository.findByEmail(email).orElseThrow());
     }
 
     public User toDomain(UserWithPasswordDTO user){

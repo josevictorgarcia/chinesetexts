@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,6 +37,11 @@ public class UserControllerRest {
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         UserDTO user = userService.findById(id);
         return (user != null) ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/")
+    public UserWithPasswordDTO getUser(@RequestParam String email){
+        return userService.findUserWithPasswordDTOByEmail(email);
     }
 
     @GetMapping("/me")
@@ -58,5 +66,13 @@ public class UserControllerRest {
         return ResponseEntity.created(location).body(newUser);
     }
     
+    @PutMapping("/{email}")
+    public ResponseEntity<UserWithPasswordDTO> putUserByEmail(@PathVariable String email, @RequestBody UserWithPasswordDTO user) {
+        UserWithPasswordDTO newUser = userService.save(email, user);
+        if(newUser == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(newUser);
+    }
     
 }

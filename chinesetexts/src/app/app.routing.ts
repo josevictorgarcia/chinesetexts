@@ -5,6 +5,7 @@ import { TextForm } from "./components/text-form.component";
 import { Flashcards } from "./components/flashcards.component";
 import { FlashcardPage } from "./components/flashcard.component";
 import { UserForm } from "./components/user-form.component";
+import { Profile } from "./components/profile.component";
 
 const appRoutes: Routes = [
   //{ path: "courses", component: CourseListComponent },
@@ -14,6 +15,7 @@ const appRoutes: Routes = [
   { path: 'flashcards', component: Flashcards },
   { path: 'flashcards/:id', component: FlashcardPage},
   { path: 'users/new', component: UserForm},
+  { path: 'users/me', component: Profile},
   { path: '', redirectTo: '', pathMatch: 'full' }
 ];
 
