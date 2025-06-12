@@ -114,6 +114,20 @@
       word-break: break-word;
       overflow-wrap: break-word;
     }
+
+    .btn-warning {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #f39c12;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-warning:hover {
+      background-color: #f1c40f;
+    }
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
@@ -160,6 +174,63 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Siguiente</span>
     </button>
+  </div>
+
+  <!-- Botón Examen -->
+  <div class="text-center mt-4">
+    <button class="btn-warning" (click)="startExam()">Examen</button>
+  </div>
+
+  <div *ngIf="displayExam">
+    <div *ngIf="!enoughWords" class="text-danger mb-3 text-center">
+      Se debe tener al menos 10 palabras en una colección para realizar un examen.
+    </div>
+
+    <div *ngIf="enoughWords" class="container my-5" style="font-family: 'Noto Serif SC', serif;">
+      <h2 class="text-center mb-5" style="font-weight: 700; font-size: 2rem; color: #f39c12;">
+        Examen de Flashcards
+      </h2>
+
+      <form (ngSubmit)="finishExam()">
+
+        <div *ngFor="let question of questions; let i = index" class="border rounded shadow-sm p-4 bg-light mb-4">
+          <h4 class="mb-4 text-dark">
+            Selecciona la opción que más se relacione con el siguiente carácter:
+            <span class="text-danger" style="font-weight: bold;"> {{ question.prompt }} </span>
+          </h4>
+
+          <div class="form-group">
+            <div *ngFor="let option of question.options" class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="radio"
+                [name]="'answer' + i"
+                [value]="option"
+                [(ngModel)]="selectedAnswers[i]"
+                [id]="'option-' + i + '-' + option"
+                required
+              >
+              <label class="form-check-label" [for]="'option-' + i + '-' + option">
+                {{ option }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-warning" type="submit">
+            Finalizar examen
+          </button>
+        </div>
+
+      </form>
+
+      <div *ngIf="examFinished" class="mt-5 text-center">
+        <h3 style="color: #27ae60;">Resultado final</h3>
+        <p class="text-xlarge">Has obtenido {{ score }} de {{ questions.length }} respuestas correctas.</p>
+      </div>
+
+    </div>
   </div>
 
   <!-- Botón Volver -->
