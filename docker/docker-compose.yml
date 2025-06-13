@@ -1,0 +1,35 @@
+version: "3.9"
+services: 
+  web:
+    image: josevictorgarcia/chinesetexts:latest
+    build: 
+       context: ../
+       dockerfile: docker/Dockerfile
+    ports:
+      - 443:8443
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/shushuguan
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+    restart: on-failure
+    depends_on:
+      - db  # Ensure that the DataBase is ready before launching the app 
+    networks:
+      - app-network  # Assigns the same network as the DataBase 
+
+  db:
+    image: mysql:8.0.36
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=shushuguan
+    volumes:
+      - mysql_data:/var/lib/mysql  # Data persistency
+    networks:
+      - app-network  # Network shared  with the web app 
+
+volumes:
+  mysql_data:  # Define the volume for  MySQL
+
+networks:
+  app-network:  # Define the networl
