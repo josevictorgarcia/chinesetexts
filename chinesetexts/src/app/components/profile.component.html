@@ -103,7 +103,7 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Contraseña actual</label>
+      <label class="form-label">Contraseña actual (rellenar solo si desea cambiar la contraseña)</label>
       <input
         type="password"
         class="form-control"
@@ -155,7 +155,7 @@
       </div>
 
       <div style="margin-top: 10px;" *ngIf="textError" class="text-danger mb-3 text-center">
-        Las contraseñas no coinciden. Se actualizó solo el nombre y el idioma.
+        {{errorMessage}}
       </div>
       <div style="margin-top: 10px;" *ngIf="textSuccess" class="text-success mb-3 text-center">
         El perfil se actualizó correctamente.

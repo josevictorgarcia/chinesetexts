@@ -45,14 +45,18 @@ public class UserService {
     public UserWithPasswordDTO save(String email, UserWithPasswordDTO user){
         Optional<User> userToUpdate = userRepository.findByEmail(email);
         if(userToUpdate.isPresent()){
+            if(!user.newPassword().isEmpty() && !passwordEncoder.matches(user.password(), userToUpdate.get().getPassword()) || user.password().isEmpty() && !user.newPassword().isEmpty() || !user.password().isEmpty() && user.newPassword().isEmpty()){
+                //Mandamos un dto de error, para informar al frontend de que las contraseñas no coinciden
+                return new UserWithPasswordDTO(null, "error", null, null, null, null, null, null);
+            }
+            if(!user.newPassword().isEmpty() && passwordEncoder.matches(user.password(), userToUpdate.get().getPassword())){
+                userToUpdate.get().setPassword(passwordEncoder.encode(user.newPassword()));
+            }
             if(!user.name().isEmpty()){ 
                 userToUpdate.get().setName(user.name());
             }
             if(!user.language().isEmpty()){
                 userToUpdate.get().setLanguage(user.language());
-            }
-            if(!user.newPassword().isEmpty() && passwordEncoder.matches(user.password(), userToUpdate.get().getPassword())){
-                userToUpdate.get().setPassword(passwordEncoder.encode(user.newPassword()));
             }
             return userWithPasswordMapper.toDTO(userRepository.save(userToUpdate.get()));
         } else{

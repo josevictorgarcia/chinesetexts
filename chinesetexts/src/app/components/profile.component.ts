@@ -22,6 +22,7 @@ export class Profile implements OnInit{
     }
 
     editMode: boolean = false;
+    errorMessage: string = '';
     textError: boolean = false;
     textSuccess: boolean = false;
 
@@ -49,11 +50,20 @@ export class Profile implements OnInit{
       this.cancelEdit();
       console.log(this.user.id);
       this.userService.putUser(this.user).subscribe(
-        () => {
+        (userDto) => {
+          console.log(userDto)
+          if(userDto.email == "error"){
+            this.errorMessage = "No se pudo actualizar la información. Por favor, asegúrate de que la contraseña actual es correcta y que la nueva contraseña no es vacía";
+            this.textError = true;
+            return;
+          }
           this.init();
           this.textSuccess = true;
         },
-        () => this.textError = true
+        () => {
+          this.errorMessage = "An error occurred while updating the user";
+          this.textError = true;
+        }
       )
     }
 
