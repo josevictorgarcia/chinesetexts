@@ -71,7 +71,9 @@ export class TextPage implements OnInit{
   } */
 
     ngOnInit(): void {
-      this.init();
+      this.loginService.reqIsLogged().subscribe(() => {
+        this.init(); // o lo que necesites hacer una vez recuperado el usuario
+      });
     }
     
     private init(): void {

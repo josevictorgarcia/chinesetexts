@@ -146,6 +146,11 @@
             {{ flashcard.word.chinese }}
           </div>
 
+          <h5 class="mt-4 text-primary">Pinyin</h5>
+          <p class="text-xlarge" style="white-space: pre-line;">
+            {{ flashcard.word.pinyin }}
+          </p>
+
           <h5 class="mt-4 text-success">Traducción (Inglés)</h5>
           <p class="text-xlarge" style="white-space: pre-line;">
             {{ flashcard.word.english }}
@@ -156,9 +161,8 @@
             {{ flashcard.word.spanish }}
           </p>
 
-          <h5 class="mt-4 text-primary">Texto en Chino</h5>
           <p class="text-xlarge" style="white-space: pre-line; margin: 30px;">
-            {{ flashcard.example.text }}
+            <a [routerLink]="'/texts/' + flashcard.example.id">Ir al texto >></a>
           </p>
         </div>
       </div>

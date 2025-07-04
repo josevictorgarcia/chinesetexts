@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TextService } from '../sevices/textService';
 import { Text } from '../model/text';
 import { Router } from '@angular/router';
+import { LoginService } from '../sevices/loginService';
 
 @Component({
   selector: 'show-text',
@@ -10,13 +11,16 @@ import { Router } from '@angular/router';
 export class AppShowText implements OnInit{
   texts: Text[] = [];
 
-  constructor(private textService:TextService, private router: Router){}
+  constructor(private textService:TextService, private router: Router, private loginService: LoginService){}
 
   ngOnInit(): void {
-      this.init();
+      this.loginService.reqIsLogged().subscribe(() => {
+        this.init(); // o lo que necesites hacer una vez recuperado el usuario
+      });
   }
 
   private init(){
+    this.loginService.reqIsLogged();
     this.loadTexts();
   }
 
