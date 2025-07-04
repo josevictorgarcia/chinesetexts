@@ -253,7 +253,7 @@ export class TextPage implements OnInit{
       }
     }
 
-    private initAddWordSection(){
+    public initAddWordSection(){
       this.showErrorModal = false;
       this.showSuccessModal = false;
       this.errorMessage = '';

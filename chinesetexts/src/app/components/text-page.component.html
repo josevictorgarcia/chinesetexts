@@ -1,7 +1,7 @@
 <div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
   <style>
     span.hover-highlight:hover {
-      background-color: #fdecea; /* color suave relacionado con #c0392b */
+      background-color: #fdecea;
       border-radius: 4px;
       cursor: pointer;
     }
@@ -14,7 +14,7 @@
     .btn-back {
       font-size: 1rem;
       color: #fff;
-      background-color: #c0392b; /* mismo color que el título */
+      background-color: #c0392b;
       border: none;
       padding: 10px 20px;
       border-radius: 4px;
@@ -22,18 +22,70 @@
     }
 
     .btn-back:hover {
-      background-color: #e74c3c; /* color más claro en hover */
+      background-color: #e74c3c;
     }
 
-    /* Estilo para el modal de error */
+    /* Modales superpuestos */
+    .add-word-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1050;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .add-word-modal {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      max-height: 80vh;
+      overflow-y: auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 600px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1100;
+    }
+
     .modal-content {
-      background-color: #f8d7da; /* fondo de error */
-      color: #721c24; /* color del texto de error */
+      background-color: #ffffff;
+      color: #c0392b;
     }
 
-    .modal-success{
-      background-color: #d4edda;
+    .modal-success {
+      background-color: #ffffff;
       color: #155724;
+    }
+
+    .add-word-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      max-width: 90%;
+      width: 600px;
+    }
+
+    .btn-close-top {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #c0392b;
+      cursor: pointer;
     }
   </style>
 
@@ -99,7 +151,6 @@
       </div>
     </div>
 
-
     <div *ngIf="!showTextSplitIntoWords">
       <h5 class="mt-4 text-success">Texto desglosado por frases</h5>
       <div class="text-muted my-4">
@@ -128,43 +179,46 @@
           </span>
       </p>
     </div>
-    <!-- Botón Back -->
+
     <div class="text-center mt-4">
       <button class="btn-back" (click)="back();">Volver</button>
     </div>
   </div>
 
   <!-- Modal de Error -->
-  <div id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" *ngIf="showErrorModal">
-    <div class="modal-dialog">
+  <div class="add-word-overlay" *ngIf="showErrorModal">
+    <div class="add-word-modal">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="errorModalLabel">Error</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeErrorModal()"></button>
         </div>
         <div class="modal-body">
-          {{ errorMessage }}
+          <span style="color: #c0392b;">{{ errorMessage }}</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Modal de Éxito -->
-  <div id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" *ngIf="showSuccessModal">
-    <div class="modal-dialog">
+  <div class="add-word-overlay" *ngIf="showSuccessModal">
+    <div class="add-word-modal">
       <div class="modal-content modal-success">
         <div class="modal-header">
           <h5 class="modal-title" id="successModalLabel">Éxito</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeSuccessModal()"></button>
         </div>
         <div class="modal-body">
-          {{ successMessage }}
+          <span style="color: #155724;">{{ successMessage }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="showAddWordSection" style="margin-top: 50px;">
+  <!-- Sección Modal para agregar palabra -->
+  <div class="add-word-overlay" *ngIf="showAddWordSection"></div>
+  <div class="add-word-modal" *ngIf="showAddWordSection">
+    <button class="btn-close-top" aria-label="Cerrar" (click)="initAddWordSection()">&times;</button>
 
     <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
       Mis colecciones:
@@ -176,13 +230,9 @@
 
     <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" (click)="saveWordToCollection(collection.id, wordToAdd)">
       <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
-        <!-- Aquí muestras la fecha de creación y el número de flashcards -->
         <div><strong>Creada:</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
-        <!--<div><strong>Número de Flashcards:</strong> {{ collection.flashcards?.length || 0 }}</div>-->
       </div>
       <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
     </div>
-
   </div>
-
 </div>
