@@ -65,10 +65,11 @@ public class SecurityConfig {
                     // PRIVATE ENDPOINTS
                     //.requestMatchers(HttpMethod.PUT,"/api/v1/users/**").hasAnyRole("USER")
 					//.requestMatchers(HttpMethod.GET,"/api/v1/users/**").hasAnyRole("ADMIN", "USER")
+					.requestMatchers( HttpMethod.GET,"/api/words/textWords").permitAll()
 					.requestMatchers(HttpMethod.GET, "/api/flashcards/**").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.POST, "/api/texts/**").hasAnyRole("ADMIN")
 					.requestMatchers(HttpMethod.GET, "/api/texts/new").hasAnyRole("ADMIN")
-					.requestMatchers( "/api/words/**").hasRole("ADMIN")
+					.requestMatchers( "/api/words/**").hasAnyRole("ADMIN")
 					// PUBLIC ENDPOINTS
 					//.requestMatchers("/v3/api-docs.yaml", "/swagger-ui/*", "/swagger-ui.html", "/api/v1/users/me").permitAll()
 					.anyRequest().permitAll()

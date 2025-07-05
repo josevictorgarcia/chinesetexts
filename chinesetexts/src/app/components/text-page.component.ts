@@ -6,6 +6,7 @@ import { Word } from '../model/word';
 import { LoginService } from '../sevices/loginService';
 import { Collection } from '../model/collection';
 import { FlashcardService } from '../sevices/flashcardService';
+import { WordService } from '../sevices/wordService';
 declare var bootstrap: any;
 
 @Component({
@@ -45,10 +46,12 @@ export class TextPage implements OnInit{
     }
 
     originalText: string[] = [];
+    wordsArray: Word[] = [];
     translatedSpanishText: string[] = [];
     originalTextSeparatedBySentences: string[] = [];
     translatedSpanishTextSeparatedBySentences: string[] = [];
 
+    showPinyin: boolean = false;
     showTextSplitIntoWords = true;
     showOriginalText = true;
 
@@ -60,7 +63,7 @@ export class TextPage implements OnInit{
     wordToAdd: string = '';
     showAddWordSection: boolean = false;
 
-  constructor(private textService:TextService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService, private flashcardService:FlashcardService){}
+  constructor(private textService:TextService, private wordService:WordService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService, private flashcardService:FlashcardService){}
 
   /* ngOnInit(): void {
     let id = this.activatedRoute.snapshot.params['id']
@@ -144,7 +147,10 @@ export class TextPage implements OnInit{
 
     private getSpanishText(id: number){
       this.textService.getSpanishText(id).subscribe(
-        (data) => {this.getTexts(data); setTimeout(() => this.initPopovers(), 0);},
+        (data) => {
+          this.getTexts(data); 
+          this.getWords(data[0]);
+        },
         (error) => console.error("Error loading the text and its translation to Spanish", error)
       )
     }
@@ -154,6 +160,17 @@ export class TextPage implements OnInit{
       this.translatedSpanishText = data[1];
       this.originalTextSeparatedBySentences = this.getSentences(data[0]);
       this.translatedSpanishTextSeparatedBySentences = this.getSentencesString(this.text.spanishTranslation);
+    }
+
+    private getWords(chineseText: string[]) {
+      this.wordService.getTextWords(chineseText).subscribe(
+        (wordsArray) => {
+          this.wordsArray = wordsArray; 
+          console.log(this.wordsArray.length, this.originalText.length, this.wordsArray)
+          setTimeout(() => this.initPopovers(), 0); 
+        },
+        (error) => console.error("Error loading pinyin for the text", error)
+      )
     }
 
     private getSentences(text: string[]): string[] {
@@ -195,6 +212,8 @@ export class TextPage implements OnInit{
       return `
         <div>
           <strong>Traducción:</strong> ${this.translatedSpanishText[i] || 'Sin traducción'}
+          <br>
+          <strong>Pinyin:</strong> ${this.wordsArray[i]?.pinyin || 'Sin pinyin'}
           <br>
           <div class="btn btn-link" id="popover-button-${i}">Guardar</div>
         </div>
@@ -284,11 +303,24 @@ export class TextPage implements OnInit{
     }
 
     changeSplit(){
+      if(this.showPinyin){
+        this.showPinyin = false;
+      }
       this.showTextSplitIntoWords = !this.showTextSplitIntoWords;
       this.init();
     }
 
+    changePinyin(){
+      this.showTextSplitIntoWords = true; // Aseguramos que el texto se muestre desglosado por palabras
+      this.showOriginalText = true; // Aseguramos que el texto original se muestre
+      this.showPinyin = !this.showPinyin;
+      this.init();
+    }
+
     changeTranslation(){
+      if(this.showPinyin){
+        this.showPinyin = false;
+      }
       this.showOriginalText = !this.showOriginalText;
       this.init();
     }

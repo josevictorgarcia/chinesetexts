@@ -19,4 +19,11 @@ export class WordService{
     saveWords(words: Word[]): Observable<any>{
       return this.httpClient.post<any>(`${BASE_URL}/createdWords`, words);
     }
+
+    getTextWords(originalText: string[]): Observable<Word[]> {
+      // Convertimos el array originalText a una cadena separada por comas
+      const params = new HttpParams().set('text', originalText.join(','));
+      return this.httpClient.get<Word[]>(`${BASE_URL}textWords`, { params });
+    }
+
 }

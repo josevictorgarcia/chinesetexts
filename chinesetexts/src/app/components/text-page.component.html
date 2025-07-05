@@ -1,6 +1,6 @@
 <div class="container my-5" style="font-family: 'Noto Serif SC', serif;">
   <style>
-    span.hover-highlight:hover {
+    .hover-highlight:hover {
       background-color: #fdecea;
       border-radius: 4px;
       cursor: pointer;
@@ -23,6 +23,25 @@
 
     .btn-back:hover {
       background-color: #e74c3c;
+    }
+
+    .pinyin-container {
+      display: inline-block;
+      text-align: center;
+      margin-right: 15px;
+    }
+
+    .pinyin {
+      font-size: 0.85rem;
+      color: #7f8c8d;
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* Eliminar los márgenes extra de las palabras */
+    .word-wrapper {
+      display: inline-block;
+      margin-right: 15px;
     }
 
     /* Modales superpuestos */
@@ -107,16 +126,23 @@
     >
 
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="toggleOriginalText" (change)="changeTranslation()">
+      <input class="form-check-input" type="checkbox" id="toggleOriginalText" (change)="changeTranslation()" [(ngModel)]="!showOriginalText">
       <label class="form-check-label" for="toggleOriginalText">
         Ver texto traducido
       </label>
     </div>
 
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changeSplit()">
+      <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changeSplit()" [(ngModel)]="!showTextSplitIntoWords">
       <label class="form-check-label" for="toggleSplitWords">
         Ver texto desglosado por frases
+      </label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changePinyin()" [ngModel]="showPinyin">
+      <label class="form-check-label" for="toggleSplitWords">
+        Mostrar Pinyin
       </label>
     </div>
  
@@ -127,14 +153,22 @@
             Haz click sobre una palabra para ver su traducción.
         </div>
         <p class="text-xlarge" style="white-space: pre-line;">
-            <span 
-              *ngFor="let word of originalText; let i = index" 
-              class="hover-highlight"
-              data-bs-toggle="popover" 
-              triggers="focus" 
-              data-bs-placement="top" 
-              [attr.data-bs-content]="getPopoverHtml(i)">
-                {{ word }}
+            <span *ngFor="let word of originalText; let i = index" >
+                
+                <!-- Contenedor para la palabra y su pinyin -->
+                <div class="word-wrapper">
+                  <span class="hover-highlight" 
+                  data-bs-toggle="popover" 
+                  triggers="focus" 
+                  data-bs-placement="top" 
+                  [attr.data-bs-content]="getPopoverHtml(i)">
+                    {{ word }}
+                  </span>
+                  <span class="pinyin" *ngIf="showPinyin">
+                    {{ wordsArray[i]?.pinyin || '--'}}
+                  </span>
+                </div>
+
             </span>
         </p>
       </div>

@@ -75,4 +75,18 @@ public class WordControllerRest {
         return ResponseEntity.created(location).body(newWord);
     }
 
+    @GetMapping("/textWords")
+    public ResponseEntity<WordDTO[]> getTextWords(@RequestParam String text) {
+        String[] originalTextArray = text.split(",");
+        WordDTO[] pinyinResults = new WordDTO[originalTextArray.length];
+
+        for (int i = 0; i < originalTextArray.length; i++) {
+            pinyinResults[i] = wordService.getWord(originalTextArray[i]);
+        }
+        
+        // Devolver el array de resultados
+        return ResponseEntity.status(HttpStatus.OK).body(pinyinResults);
+    }
+    
+
 }

@@ -2,6 +2,7 @@ package com.tesseract.demo.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,15 @@ public class WordService {
             }
         }
         return pendingWords.toArray(new WordDTO[0]);
+    }
+
+    public WordDTO getWord(String chinese) {
+        Optional<Word> word = wordRepository.findByChinese(chinese);
+        if (word.isPresent()) {
+            return toDTO(word.get());
+        } else {
+            return null;
+        }
     }
 
     private WordDTO toDTO(Word word){
