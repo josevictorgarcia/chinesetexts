@@ -1,0 +1,22 @@
+{
+    "home":"Inicio",
+    "login":"Iniciar Sesión",
+    "cancel":"Cancelar",
+    "signup":"Registrarse",
+    "logout":"Cerrar Sesión",
+    "profile":"Perfil",
+    "email":"Correo electrónico",
+    "password":"Contraseña",
+    "text":"Texto",
+    "texts":"Textos",
+    "flashcards":"Flashcards",
+    "flashcard":"Flashcard",
+    "Enter Your Email":"Ingresa tu correo electrónico",
+    "Enter Your Password":"Ingresa tu contraseña",
+    "Incorrect credentials. Please try again.":"Credenciales incorrectas. Por favor, inténtalo de nuevo.",
+    "Please fill in all fields.":"Por favor, completa todos los campos.",
+    "Privacy Policy":"Política de Privacidad",
+    "Terms of Use":"Términos de Uso",
+    "Contact":"Contacto",
+    "All rights reserved":"Todos los derechos reservados"
+}

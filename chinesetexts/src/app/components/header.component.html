@@ -29,11 +29,18 @@
       }
     }
 
-
+    /* Estilos para las banderas */
+    .flag-button {
+      width: 30px;
+      height: 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
   </style>
+
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="#" style="font-weight: 700; font-size: 1.8rem; color: #c0392b;">
-      <i class="bi bi-book-half me-2" style="font-size: 1.8rem;"></i> Inicio
+      <i class="bi bi-book-half me-2" style="font-size: 1.8rem;"></i> {{ 'home' | translate}}
     </a>
     <button
       class="navbar-toggler border-0"
@@ -58,60 +65,61 @@
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/flashcards'">Flashcards</a></li>
         <li *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">New Text</a></li>
       </ul>
+
       <ul *ngIf="!showLoginForm && !loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
           <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#" [routerLink]="'/users/new'">
-            <i class="bi bi-person-fill me-1"></i> Registrarse
+            <i class="bi bi-person-fill me-1"></i> {{ 'signup' | translate }}
           </a>
         </li>
         
-        <!-- Sección de Iniciar Sesión -->
         <li class="nav-item">
           <a (click)="toggleLoginForm()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+            <i class="bi bi-box-arrow-in-right me-1"></i> {{ 'login' | translate }}
           </a>
         </li>
       </ul>
 
-      <!-- Formulario de Login (solo visible si showLoginForm es true) -->
       <div *ngIf="showLoginForm && !loginService.isLogged()" class="login-form-container position-absolute top-50 start-50 translate-middle p-4 bg-light rounded-3 shadow-lg">
-        <h4 class="text-center mb-3">Iniciar Sesión</h4>
+        <h4 class="text-center mb-3">{{ 'login' | translate }}</h4>
         <form (ngSubmit)="login()">
           <div class="mb-3">
-            <label for="email" class="form-label">Correo electrónico</label>
-            <input [(ngModel)]="loginEmail" name="email" type="email" class="form-control" id="email" placeholder="Ingresa tu email" required />
+            <label for="email" class="form-label">{{ 'email' | translate }}</label>
+            <input [(ngModel)]="loginEmail" name="email" type="email" class="form-control" id="email" [placeholder]="'Enter Your Email' | translate" required />
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input [(ngModel)]="loginPassword" name="password" type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required />
+            <label for="password" class="form-label">{{ 'password' | translate }}</label>
+            <input [(ngModel)]="loginPassword" name="password" type="password" class="form-control" id="password" [placeholder]="'Enter Your Password' | translate" required />
           </div>
           <div class="text-danger mb-3 text-center">
-            {{ messageError }}
+            {{ messageError | translate}}
           </div>
           <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-danger">Iniciar Sesión</button>
-            <button type="button" (click)="cancelLogin()" class="btn btn-outline-secondary">Cancelar</button>
+            <button type="submit" class="btn btn-danger">{{ 'login' | translate }}</button>
+            <button type="button" (click)="cancelLogin()" class="btn btn-outline-secondary">{{ 'cancel' | translate }}</button>
           </div>
         </form>
       </div>
 
       <ul *ngIf="loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <!-- Sección de Registrarse (sin cambios) -->
         <li class="nav-item me-3">
           <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" [routerLink]="'/users/me'">
-            <i class="bi bi-person-fill me-1"></i> Perfil
+            <i class="bi bi-person-fill me-1"></i> {{ 'profile' | translate }}
           </a>
         </li>
         
-        <!-- Sección de Iniciar Sesión -->
         <li class="nav-item">
           <a (click)="logout()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Cerrar Sesión
+            <i class="bi bi-box-arrow-in-right me-1"></i> {{ 'logout' | translate }}
           </a>
         </li>
       </ul>
-      
+
+      <!-- Botones de cambio de idioma -->
+      <div class="d-flex ms-3">
+        <img src="https://img.freepik.com/free-vector/illustration-spain-flag_53876-18168.jpg" class="flag-button" alt="Español" (click)="changeLanguage('es')" />
+        <img src="https://img.freepik.com/free-vector/illustration-uk-flag_53876-18166.jpg" class="flag-button" alt="English" (click)="changeLanguage('en')" />
+      </div>
     </div>
   </div>
 </nav>

@@ -1,0 +1,22 @@
+{
+    "home":"Home",
+    "login":"Login",
+    "cancel":"Cancel",
+    "signup":"Sign Up",
+    "logout":"Logout",
+    "profile":"Profile",
+    "email":"Email",
+    "password":"Password",
+    "text":"Text",
+    "texts":"Texts",
+    "flashcards":"Flashcards",
+    "flashcard":"Flashcard",
+    "Enter Your Email":"Enter your email",
+    "Enter Your Password":"Enter your password",
+    "Incorrect credentials. Please try again.":"Incorrect credentials. Please try again.",
+    "Please fill in all fields.":"Please fill in all fields.",
+    "Privacy Policy":"Privacy Policy",
+    "Terms of Use":"Terms of Use",
+    "Contact":"Contact",
+    "All rights reserved":"All rights reserved"
+}
