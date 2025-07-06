@@ -49,14 +49,14 @@
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
-    Crear Nuevo Texto
+    {{ 'Create New Text' | translate }}
   </h1>
 
   <div class="border rounded shadow-sm p-4">
     <form (ngSubmit)="onSubmit()" #createTextForm="ngForm">
       <!-- Título en inglés -->
       <div class="form-group">
-        <label for="titleEnglish">Título (Inglés)</label>
+        <label for="titleEnglish">{{ 'Title (English)' | translate }}</label>
         <input 
           id="titleEnglish" 
           name="titleEnglish" 
@@ -64,12 +64,12 @@
           class="form-control" 
           [(ngModel)]="text.titleEnglish" 
           required 
-          placeholder="Ingresa el título en inglés">
+          placeholder="{{ 'Enter the title in English' | translate }}">
       </div>
 
       <!-- Título en español -->
       <div class="form-group">
-        <label for="titleSpanish">Título (Español)</label>
+        <label for="titleSpanish">{{ 'Title (Spanish)' | translate }}</label>
         <input 
           id="titleSpanish" 
           name="titleSpanish" 
@@ -77,51 +77,51 @@
           class="form-control" 
           [(ngModel)]="text.titleSpanish"
           required 
-          placeholder="Ingresa el título en español">
+          placeholder="{{ 'Enter the title in Spanish' | translate }}">
       </div>
 
       <!-- Texto -->
       <div class="form-group">
-        <label for="text">Texto</label>
+        <label for="text">{{ 'text' | translate }}</label>
         <textarea 
           id="text" 
           name="text" 
           class="form-control" 
           [(ngModel)]="text.text" 
           required 
-          placeholder="Ingresa el texto" 
+          placeholder="{{ 'Enter the text' | translate }}" 
           rows="4"></textarea>
       </div>
 
       <!-- Traducción inglés -->
       <div class="form-group">
-        <label for="englishTranslation">Traducción (Inglés)</label>
+        <label for="englishTranslation">{{'Translation (English)' | translate}}</label>
         <textarea 
           id="englishTranslation" 
           name="englishTranslation" 
           class="form-control" 
           [(ngModel)]="text.englishTranslation"
           required 
-          placeholder="Ingresa la traducción en inglés" 
+          placeholder="{{ 'Enter the translation in English' | translate }}" 
           rows="4"></textarea>
       </div>
 
       <!-- Traducción español -->
       <div class="form-group">
-        <label for="spanishTranslation">Traducción (Español)</label>
+        <label for="spanishTranslation">{{ 'Translation (Spanish)' | translate }}</label>
         <textarea 
           id="spanishTranslation" 
           name="spanishTranslation" 
           class="form-control" 
           [(ngModel)]="text.spanishTranslation" 
           required 
-          placeholder="Ingresa la traducción en español" 
+          placeholder="{{ 'Enter the translation in Spanish' | translate }}" 
           rows="4"></textarea>
       </div>
 
       <!-- Nivel -->
       <div class="form-group">
-        <label for="level">Nivel</label>
+        <label for="level">{{ 'level' | translate }}</label>
         <input 
           id="level" 
           name="level" 
@@ -129,38 +129,38 @@
           class="form-control" 
           [(ngModel)]="text.level" 
           required 
-          placeholder="Ingresa el nivel del texto">
+          placeholder="{{ 'Enter the text level' | translate }}">
       </div>
 
       <!-- Descripción inglés -->
       <div class="form-group">
-        <label for="englishDescription">Descripción (Inglés)</label>
+        <label for="englishDescription">{{ 'Description (English)' | translate }}</label>
         <textarea 
           id="englishDescription" 
           name="englishDescription" 
           class="form-control" 
           [(ngModel)]="text.englishDescription" 
           required 
-          placeholder="Ingresa la descripción en inglés" 
+          placeholder="{{ 'Enter the description in English' | translate }}" 
           rows="4"></textarea>
       </div>
 
       <!-- Descripción español -->
       <div class="form-group">
-        <label for="spanishDescription">Descripción (Español)</label>
+        <label for="spanishDescription">{{ 'Description (Spanish)' | translate }}</label>
         <textarea 
           id="spanishDescription" 
           name="spanishDescription" 
           class="form-control" 
           [(ngModel)]="text.spanishDescription" 
           required 
-          placeholder="Ingresa la descripción en español" 
+          placeholder="{{ 'Enter the description in Spanish' | translate }}" 
           rows="4"></textarea>
       </div>
 
       <!-- Imagen -->
       <div class="form-group">
-        <label for="image">Imagen</label>
+        <label for="image">{{ 'Image' | translate }}</label>
         <input 
           id="image" 
           name="image" 
@@ -171,7 +171,7 @@
 
       <!-- Palabras por Verificar -->
       <div *ngIf="palabrasAVerificar" class="border rounded shadow-sm p-4 mt-5">
-        <h2 class="text-center mb-4" style="color: #c0392b;">Palabras por Verificar</h2>
+        <h2 class="text-center mb-4" style="color: #c0392b;">{{ 'Words to Verify' | translate }}</h2>
 
         <!-- Lista de palabras -->
         <div class="form-group" *ngFor="let word of pendingWords; let i = index">
@@ -195,7 +195,7 @@
                 class="form-control" 
                 name="english"
                 [(ngModel)]="pendingWords[i].english"
-                placeholder="Inglés"
+                placeholder="{{ 'English' | translate }}"
                 required>
             </div>
 
@@ -206,7 +206,7 @@
                 class="form-control" 
                 name="spanish"
                 [(ngModel)]="pendingWords[i].spanish"
-                placeholder="Español"
+                placeholder="{{ 'Spanish' | translate }}"
                 required>
             </div>
           </div>
@@ -218,7 +218,7 @@
             (click)="saveWords()" 
             class="btn-submit" 
             [disabled]="!formularioValido()">
-            Guardar Palabras
+            {{ 'Save Words' | translate }}
           </button>
         </div>
       </div>
@@ -227,14 +227,14 @@
       <div class="text-center mt-4">
         <button 
           class="btn-submit">
-          Guardar
+          {{ 'Save' | translate }}
         </button>
       </div>
     </form>
 
     <!-- Botón Volver -->
     <div class="text-center mt-4">
-      <button class="btn-back" (click)="back();">Volver</button>
+      <button class="btn-back" (click)="back();">{{ 'Back' | translate }}</button>
     </div>
   </div>
 </div>

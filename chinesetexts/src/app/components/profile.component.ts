@@ -53,7 +53,7 @@ export class Profile implements OnInit{
         (userDto) => {
           console.log(userDto)
           if(userDto.email == "error"){
-            this.errorMessage = "No se pudo actualizar la información. Por favor, asegúrate de que la contraseña actual es correcta y que la nueva contraseña no es vacía";
+            this.errorMessage = "The information could not be updated. Please make sure the current password is correct and that the new password is not empty.";
             this.textError = true;
             return;
           }

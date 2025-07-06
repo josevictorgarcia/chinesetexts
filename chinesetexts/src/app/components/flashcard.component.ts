@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlashcardService } from '../sevices/flashcardService';
 import { Flashcard } from '../model/flashcard';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Question {
   prompt: string;       // enunciado (chinese)
@@ -21,11 +22,12 @@ export class FlashcardPage implements OnInit{
     enoughWords: boolean = false;
 
     questions: Question[] = [];
+    questions2: Question[] = []; // Para tener preguntas por si se hace un cambio de idioma 
     selectedAnswers: string[] = [];
     score: number = 0;
     examFinished: boolean = false;
 
-    constructor(private router: Router, private flashcardService:FlashcardService, private activatedRoute: ActivatedRoute){}
+    constructor(private router: Router, private flashcardService:FlashcardService, private activatedRoute: ActivatedRoute, public translate: TranslateService){}
 
     ngOnInit(): void {
       this.init();
@@ -65,24 +67,38 @@ export class FlashcardPage implements OnInit{
 
           // Aleatoriamente decidimos si será una pregunta de pinyin o de español
           const answerType = Math.random() < 0.5 ? 'pinyin' : 'spanish';
+          const answerType2 = Math.random() < 0.5 ? 'pinyin' : 'english';
 
           const correctAnswer = flashcard.word[answerType];
+          const correctAnswer2 = flashcard.word[answerType2];
 
           // Generar opciones incorrectas
           let distractors = this.flashcards
             .filter(fc => fc.word[answerType] !== correctAnswer)
             .map(fc => fc.word[answerType]);
 
+          let distractors2 = this.flashcards
+            .filter(fc2 => fc2.word[answerType2] !== correctAnswer2)
+            .map(fc2 => fc2.word[answerType2]);
+
           // Mezclar y tomar 3 incorrectas
           distractors = this.shuffleArray(distractors).slice(0, 3);
+          distractors2 = this.shuffleArray(distractors2).slice(0, 3);
 
           // Mezclar opciones con la correcta
           const options = this.shuffleArray([...distractors, correctAnswer]);
+          const options2 = this.shuffleArray([...distractors2, correctAnswer2]);
 
           this.questions.push({
             prompt,
             options,
             correctAnswer,
+          });
+
+          this.questions2.push({
+            prompt,
+            options: options2,
+            correctAnswer: correctAnswer2,
           });
         }
 
@@ -99,9 +115,15 @@ export class FlashcardPage implements OnInit{
     }
 
     finishExam() {
-      this.score = this.questions.reduce((acc, question, index) => {
-        return acc + (this.selectedAnswers[index] === question.correctAnswer ? 1 : 0);
-      }, 0);
+      if(this.translate.currentLang === 'es'){
+        this.score = this.questions.reduce((acc, question, index) => {
+          return acc + (this.selectedAnswers[index] === question.correctAnswer ? 1 : 0);
+        }, 0);
+      } else {
+        this.score = this.questions2.reduce((acc, question, index) => {
+          return acc + (this.selectedAnswers[index] === question.correctAnswer ? 1 : 0);
+        }, 0);
+      }
       this.examFinished = true;
     }
 
