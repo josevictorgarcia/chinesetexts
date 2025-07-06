@@ -67,12 +67,6 @@
       </ul>
 
       <ul *ngIf="!showLoginForm && !loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item me-3">
-          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#" [routerLink]="'/users/new'">
-            <i class="bi bi-person-fill me-1"></i> {{ 'signup' | translate }}
-          </a>
-        </li>
-        
         <li class="nav-item">
           <a (click)="toggleLoginForm()" class="nav-link btn btn-danger rounded-pill px-3 py-1 fw-bold">
             <i class="bi bi-box-arrow-in-right me-1"></i> {{ 'login' | translate }}
@@ -102,6 +96,12 @@
       </div>
 
       <ul *ngIf="loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li *ngIf="loginService.isRoleAdmin()" class="nav-item me-3">
+          <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" href="#" [routerLink]="'/users/new'">
+            <i class="bi bi-plus-circle-fill"></i> {{ 'signup' | translate }}
+          </a>
+        </li>
+
         <li class="nav-item me-3">
           <a class="nav-link btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" [routerLink]="'/users/me'">
             <i class="bi bi-person-fill me-1"></i> {{ 'profile' | translate }}

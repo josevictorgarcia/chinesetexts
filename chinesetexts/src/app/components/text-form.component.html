@@ -169,6 +169,14 @@
           class="form-control">
       </div>
 
+      <div *ngIf="errorText" class="text-danger mb-3 text-center">
+        {{ messageError | translate }}
+      </div>
+
+      <div *ngIf="successText" class="text-success mb-3 text-center">
+          {{ 'Text successfully created!' | translate }}
+      </div>
+      
       <!-- Palabras por Verificar -->
       <div *ngIf="palabrasAVerificar" class="border rounded shadow-sm p-4 mt-5">
         <h2 class="text-center mb-4" style="color: #c0392b;">{{ 'Words to Verify' | translate }}</h2>
@@ -221,6 +229,10 @@
             {{ 'Save Words' | translate }}
           </button>
         </div>
+      </div>
+
+      <div *ngIf="palabrasAVerificar" class="text-danger mb-3 text-center">
+        {{ 'There are words that do not have a translation, please check.' | translate }}
       </div>
 
       <!-- Botón Submit -->

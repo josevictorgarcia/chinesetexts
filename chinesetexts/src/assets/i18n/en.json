@@ -99,5 +99,11 @@
     "Enter the full name":"Enter the full name",
     "Enter the email address":"Enter the email address",
     "Enter a password":"Enter a password",
-    "Save User":"Save User"
+    "Save User":"Save User",
+    "Text successfully created!":"Text successfully created!",
+    "There are words that do not have a translation, please check.":"There are words that do not have a translation, please check.",
+    "Error creating the user. Please make sure all fields are filled in and the password is at least 8 characters long.":"Error creating the user. Please make sure all fields are filled in and the password is at least 8 characters long.",
+    "User successfully created!":"User successfully created!",
+    "User already exists or there was an error creating the user.":"User already exists or there was an error creating the user.",
+    "Error creating the text. Please check that none of the titles in English or Spanish already exist.":"Error creating the text. Please check that none of the titles in English or Spanish already exist."
 }

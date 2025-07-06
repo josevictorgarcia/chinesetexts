@@ -19,6 +19,10 @@ export class UserForm implements OnInit{
       roles: ['USER'] // valor por defecto
     };
 
+    errorForm: boolean = false;
+    errorMessage: string = '';
+    successForm: boolean = false;
+
     constructor(private userService:UserService, private router: Router){}
     
     ngOnInit(){
@@ -32,16 +36,36 @@ export class UserForm implements OnInit{
         this.user.language = 'en';
         this.user.collections = [];
         this.user.roles = ['USER'];
+        this.errorForm = false;
+        this.errorMessage = '';
+        this.successForm = false;
+    }
+
+    private formularioUsuarioValido(): boolean {
+        return this.user.email.trim() !== '' &&
+               this.user.name.trim() !== '' &&
+               this.user.password.trim().length >= 8;
     }
 
     onSubmit(){
+      this.errorForm = false;
+      this.errorMessage = '';
+      this.successForm = false;
+      if(!this.formularioUsuarioValido()){
+        this.errorForm = true;
+        this.errorMessage = "Error creating the user. Please make sure all fields are filled in and the password is at least 8 characters long."
+      } else {
         this.userService.postUser(this.user).subscribe(
             () => {
                 this.clearForm();
-                this.router.navigate(['/'])
+                this.successForm = true;
             },
-            (error) => console.error("Error creating the user", error)
+            (error) => {
+              this.errorForm = true;
+              this.errorMessage = "User already exists or there was an error creating the user.";
+            }
         );
+      }
     }
 
     back(){this.router.navigate(['/'])}

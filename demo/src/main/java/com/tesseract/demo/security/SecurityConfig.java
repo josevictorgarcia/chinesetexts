@@ -70,6 +70,7 @@ public class SecurityConfig {
 					.requestMatchers(HttpMethod.POST, "/api/texts/**").hasAnyRole("ADMIN")
 					.requestMatchers(HttpMethod.GET, "/api/texts/new").hasAnyRole("ADMIN")
 					.requestMatchers( "/api/words/**").hasAnyRole("ADMIN")
+					.requestMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("ADMIN")
 					// PUBLIC ENDPOINTS
 					//.requestMatchers("/v3/api-docs.yaml", "/swagger-ui/*", "/swagger-ui.html", "/api/v1/users/me").permitAll()
 					.anyRequest().permitAll()

@@ -49,7 +49,7 @@
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
-    {{' Create New User' | translate }}
+    {{ 'Create New User' | translate }}
   </h1>
 
   <div class="border rounded shadow-sm p-4">
@@ -112,6 +112,14 @@
         <button class="btn-submit">{{ 'Save User' | translate }}</button>
       </div>
     </form>
+
+    <div *ngIf="errorForm" class="text-danger mb-3 text-center">
+        {{ errorMessage | translate }}
+    </div>
+
+    <div *ngIf="successForm" class="text-success mb-3 text-center">
+        {{ 'User successfully created!' | translate }}
+    </div>
 
     <!-- Botón Volver -->
     <div class="text-center mt-4">

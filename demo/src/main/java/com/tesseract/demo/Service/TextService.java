@@ -33,7 +33,7 @@ public class TextService {
     private TextMapper textMapper;
 
     public TextDTO save(Text text){     //Este metodo es solo para inicializar los datos (toma Text directamente)
-        if(textRepository.findByTitleSpanish(text.getTitleEnglish()).isPresent() || textRepository.findByTitleSpanish(text.getTitleSpanish()).isPresent()){
+        if(textRepository.findByTitleEnglish(text.getTitleEnglish()).isPresent() || textRepository.findByTitleSpanish(text.getTitleSpanish()).isPresent()){
             return null;
         } else{
             return toDTO(textRepository.save(text));
@@ -43,7 +43,7 @@ public class TextService {
     public TextDTO save(TextDTO text){  //Este metodo es el que se llama al enviar el formulario (con DTOs)
         Text newText = toDomain(text);
         newText.setCreationDate(LocalDate.now());
-        if(textRepository.findByTitleSpanish(newText.getTitleEnglish()).isPresent() || textRepository.findByTitleSpanish(newText.getTitleSpanish()).isPresent()){
+        if(textRepository.findByTitleEnglish(newText.getTitleEnglish()).isPresent() || textRepository.findByTitleSpanish(newText.getTitleSpanish()).isPresent()){
             return null;
         } else{
             return toDTO(textRepository.save(newText));

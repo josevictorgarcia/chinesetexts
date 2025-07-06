@@ -30,6 +30,10 @@ export class TextForm implements OnInit{
     palabrasAVerificar: boolean = false;
     pendingWords: Word[] = [];
 
+    errorText: boolean = false;
+    messageError: string = '';
+    successText: boolean = false;
+
     constructor(private textService:TextService, private wordService:WordService, private router: Router){}
 
     ngOnInit(){
@@ -47,6 +51,9 @@ export class TextForm implements OnInit{
         this.text.spanishDescription = '';
         this.text.creationDate = '';
         this.text.translation = '';
+        this.errorText = false;
+        this.messageError = '';
+        this.selectedFile = null;
     }
 
     onFileSelected(event: any) {
@@ -71,29 +78,55 @@ export class TextForm implements OnInit{
         )
     }
 
+    private formularioTextoValido(): boolean {
+        return this.text.titleSpanish.trim() !== '' &&
+               this.text.titleEnglish.trim() !== '' &&
+               this.text.text.trim() !== '' &&
+               this.text.spanishTranslation.trim() !== '' &&
+               this.text.englishTranslation.trim() !== '' &&
+               this.text.level.trim() !== '' &&
+               this.text.englishDescription.trim() !== '' &&
+               this.text.spanishDescription.trim() !== '' &&
+               this.selectedFile !== null && this.selectedFile !== undefined;
+    }
+
     onSubmit(){
-        this.wordService.getPendingWords(this.text.text).subscribe(
-            (pendingWords) => {
-                this.pendingWords = pendingWords;
-                if(this.pendingWords.length == 0){
-                    this.palabrasAVerificar = false;
-                    this.textService.postText(this.text).subscribe(
-                        (createdText) => {
-                            if(createdText.id && this.selectedFile){
-                                this.textService.createTextImage(createdText.id, this.selectedFile).subscribe(
-                                    () => this.clearForm(),
-                                    (error) => console.error("Error uploading the text image", error)
-                                )
+        this.successText = false;
+        this.errorText = false;
+        this.messageError = '';
+        if(!this.formularioTextoValido()){
+            this.errorText = true;
+            this.messageError = 'Please fill in all fields.';
+            return;
+        } else {
+            this.errorText = false;
+            this.messageError = '';
+            this.wordService.getPendingWords(this.text.text).subscribe(
+                (pendingWords) => {
+                    this.pendingWords = pendingWords;
+                    if(this.pendingWords.length == 0){
+                        this.palabrasAVerificar = false;
+                        this.textService.postText(this.text).subscribe(
+                            (createdText) => {
+                                if(createdText.id && this.selectedFile){
+                                    this.textService.createTextImage(createdText.id, this.selectedFile).subscribe(
+                                        () => {this.clearForm(); this.successText = true;},
+                                        (error) => console.error("Error uploading the text image", error)
+                                    )
+                                }
+                            },
+                            (error) => {
+                                this.errorText = true;
+                                this.messageError = "Error creating the text. Please check that none of the titles in English or Spanish already exist."
                             }
-                        },
-                        (error) => console.error("Error al crear el texto", error)
-                    );
-                } else {
-                    this.palabrasAVerificar = true;
-                }
-            },
-            (error) => console.error("Error getting pending words", error)
-        )
+                        );
+                    } else {
+                        this.palabrasAVerificar = true;
+                    }
+                },
+                (error) => console.error("Error getting pending words", error)
+            )
+        }
     }
 
     back(){this.router.navigate(['/'])}
