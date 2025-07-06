@@ -100,6 +100,19 @@ public class TextService {
         return result;
     }
 
+    public String[][] getTextEnglish(TextDTO text){
+        List<String> textSegmented = jiebaService.segment(text.text());
+        List<String> words = dictionaryService.translateToEnglish(textSegmented);
+
+        String[] chineseArray = textSegmented.toArray(new String[0]);
+        String[] englishArray = words.toArray(new String[0]);
+
+        String[][] result = new String[2][];
+        result[0] = chineseArray;
+        result[1] = englishArray;
+        return result;
+    }
+
     private TextDTO toDTO(Text text){
         return textMapper.toDTO(text);
     }

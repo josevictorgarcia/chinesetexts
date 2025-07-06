@@ -33,6 +33,10 @@ export class TextService{
       return this.httpClient.get<any>(`${BASE_URL}${id}/SpanishText`);
     }
 
+    getEnglishText(id: number): Observable<any>{
+      return this.httpClient.get<any>(`${BASE_URL}${id}/EnglishText`);
+    }
+
     /*getEnglishText(id: number): Observable<any>{
       return this.httpClient.get<any>(`${BASE_URL}${id}/EnglishText`);
     }

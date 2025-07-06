@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { TextService } from '../sevices/textService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Text } from '../model/text'
@@ -7,13 +7,15 @@ import { LoginService } from '../sevices/loginService';
 import { Collection } from '../model/collection';
 import { FlashcardService } from '../sevices/flashcardService';
 import { WordService } from '../sevices/wordService';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 declare var bootstrap: any;
 
 @Component({
   selector: 'text-page',
   templateUrl: './text-page.component.html',
 })
-export class TextPage implements OnInit{
+export class TextPage implements OnInit, OnDestroy{
   /* text: Text = {
     title: "",
     text: "",
@@ -48,8 +50,10 @@ export class TextPage implements OnInit{
     originalText: string[] = [];
     wordsArray: Word[] = [];
     translatedSpanishText: string[] = [];
+    translatedEnglishText: string[] = [];
     originalTextSeparatedBySentences: string[] = [];
     translatedSpanishTextSeparatedBySentences: string[] = [];
+    translatedEnglishTextSeparatedBySentences: string[] = [];
 
     showPinyin: boolean = false;
     showTextSplitIntoWords = true;
@@ -63,7 +67,9 @@ export class TextPage implements OnInit{
     wordToAdd: string = '';
     showAddWordSection: boolean = false;
 
-  constructor(private textService:TextService, private wordService:WordService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService, private flashcardService:FlashcardService){}
+    langChangeSub: Subscription = new Subscription();
+
+  constructor(private textService:TextService, private wordService:WordService, private router: Router, private activatedRoute: ActivatedRoute, private loginService:LoginService, private flashcardService:FlashcardService, public translate: TranslateService){}
 
   /* ngOnInit(): void {
     let id = this.activatedRoute.snapshot.params['id']
@@ -77,6 +83,14 @@ export class TextPage implements OnInit{
       this.loginService.reqIsLogged().subscribe(() => {
         this.init(); // o lo que necesites hacer una vez recuperado el usuario
       });
+      this.langChangeSub = this.translate.onLangChange.subscribe((event: LangChangeEvent) => { //Cuando se produce un cambio de idioma es importante reiniciarlo todo
+        console.log('Language changed to:', event.lang);
+        this.init();
+      });
+    }
+
+    ngOnDestroy(): void {
+      this.langChangeSub.unsubscribe();
     }
     
     private init(): void {
@@ -149,9 +163,20 @@ export class TextPage implements OnInit{
       this.textService.getSpanishText(id).subscribe(
         (data) => {
           this.getTexts(data); 
-          this.getWords(data[0]);
+          this.getEnglishText(id);
         },
         (error) => console.error("Error loading the text and its translation to Spanish", error)
+      )
+    }
+
+    private getEnglishText(id: number){
+      this.textService.getEnglishText(id).subscribe(
+        (data) => {
+          this.translatedEnglishText = data[1];
+          this.translatedEnglishTextSeparatedBySentences = this.getSentencesString(this.text.englishTranslation);
+          this.getWords(data[0]);
+        },
+        (error) => console.error("Error loading the text and its translation to English", error)
       )
     }
 
@@ -211,11 +236,13 @@ export class TextPage implements OnInit{
       // Por ejemplo:
       return `
         <div>
+          <strong>Translation:</strong> ${this.translatedEnglishText[i] || 'Not available'}
+          <br>
           <strong>Traducción:</strong> ${this.translatedSpanishText[i] || 'Sin traducción'}
           <br>
-          <strong>Pinyin:</strong> ${this.wordsArray[i]?.pinyin || 'Sin pinyin'}
+          <strong>Pinyin:</strong> ${this.wordsArray[i]?.pinyin || 'No pinyin'}
           <br>
-          <div class="btn btn-link" id="popover-button-${i}">Guardar</div>
+          <div class="btn btn-link" id="popover-button-${i}">Save/Guardar</div>
         </div>
       `;
     }
@@ -236,6 +263,8 @@ export class TextPage implements OnInit{
       // Por ejemplo:
       return `
         <div>
+          <strong>Translation:</strong> ${this.translatedEnglishTextSeparatedBySentences[i] || 'Not available'}
+          <br>
           <strong>Traducción:</strong> ${this.translatedSpanishTextSeparatedBySentences[i] || 'Sin traducción'}
           <br>
         </div>
@@ -251,10 +280,10 @@ export class TextPage implements OnInit{
           this.collections = currentUser.collections;
           this.showAddWordSection = true;
         } else {
-          this.showError("Debes crear una colección desde el apartado de 'flashcards' para comenzar a guardar palabras. Si el error persiste, recarga la página e inténtalo de nuevo.")
+          this.showError(this.translate.instant("You need to create a collection from the 'flashcards' section to start saving words. If the error persists, reload the page and try again."))
         }
       } else {
-        this.showError("Debes iniciar sesión para guardar palabras.")
+        this.showError(this.translate.instant("You must log in to save words."))
       }
     }
 
@@ -265,12 +294,12 @@ export class TextPage implements OnInit{
           (message) => {
             console.log(message);
             this.initAddWordSection();
-            this.showSuccess('Palabra guardada con éxito');
+            this.showSuccess(this.translate.instant('Word saved successfully'));
           },
-          (error) => this.showError("Word could not be added to collection")
+          (error) => this.showError(this.translate.instant("Word could not be added to collection"))
         )
       } else {
-        this.showError("Error inesperado al añadir la palabra")
+        this.showError(this.translate.instant("Unexpected error when adding the word"))
       }
     }
 

@@ -24,6 +24,7 @@ export class AppHeader {
       private translate: TranslateService
     ) {
       this.translate.setDefaultLang('en'); // Establecer el idioma por defecto
+      this.translate.use('en');
     }
 
     public changeLanguage(language: string) {
@@ -49,9 +50,17 @@ export class AppHeader {
       }
     }
 
-    public logout() {
-      this.loginService.logout()
-      this.router.navigate(['/']);
+    public logout(): void {
+      this.loginService.logout().subscribe({
+        next: () => {
+          // Aquí el logout ya se completó
+          this.router.navigate(['/']);
+          console.log(this.loginService.isLogged()); // Debe mostrar false
+        },
+        error: (error) => {
+          console.error("Error en logout:", error);
+        }
+      });
     }
 
     public toggleLoginForm() {

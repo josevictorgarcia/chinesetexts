@@ -79,6 +79,18 @@ public class TextControllerRest {
         }
     }
 
+    @GetMapping("/{id}/EnglishText")
+    public ResponseEntity<String[][]> getTextEnglish(@PathVariable long id){
+        TextDTO text = this.textService.getText(id);
+        if (text == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } else {
+            String [][] result = textService.getTextEnglish(text);
+            // Devolver el Map con el mapeo
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+    }
+
     /*@GetMapping("/{id}/EnglishText")
     public ResponseEntity<String[][]> getTextEnglish(@PathVariable long id){
         Text text = this.textService.getText(id);

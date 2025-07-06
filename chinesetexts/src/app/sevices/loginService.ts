@@ -35,17 +35,14 @@ export class LoginService {
     );
   }
 
-  public logout(): void {
-    this.http.post(BASE_URL + "logout", {}, { withCredentials: true }).subscribe(
-      () => {
+  public logout(): Observable<any> {
+    return this.http.post(BASE_URL + "logout", {}, { withCredentials: true }).pipe(
+      tap(() => {
         console.log("LOGOUT: Successfully");
         this.user = undefined;
         localStorage.removeItem("user");
         this.loggedInSubject.next(false);
-      },
-      (error) => {
-        console.error("LOGOUT: Failed", error);
-      }
+      })
     );
   }
 

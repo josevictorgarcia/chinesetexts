@@ -109,18 +109,18 @@
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
-    {{text.titleSpanish}}
+    {{ translate.currentLang === 'en' ? text.titleEnglish : text.titleSpanish }}
   </h1>
 
   <div class="border rounded shadow-sm p-4">
     <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
       <div>{{ text.creationDate | date:'mediumDate' }}</div>
-      <div><strong>Nivel:</strong> {{ text.level }}</div>
+      <div><strong>{{ 'level:' | translate }}</strong> {{ text.level }}</div>
     </div>
 
     <img 
       [src]="'/api/texts/' + text.id + '/image'" 
-      alt="{{ text.titleSpanish }}" 
+      alt="{{ translate.currentLang === 'en' ? text.titleEnglish : text.titleSpanish }}" 
       class="img-fluid rounded mb-3" 
       style="max-height: 250px; object-fit: cover;"
     >
@@ -128,29 +128,29 @@
     <div class="form-check">
       <input class="form-check-input" type="checkbox" id="toggleOriginalText" (change)="changeTranslation()" [(ngModel)]="!showOriginalText">
       <label class="form-check-label" for="toggleOriginalText">
-        Ver texto traducido
+        {{ 'See translated text' | translate }}
       </label>
     </div>
 
     <div class="form-check">
       <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changeSplit()" [(ngModel)]="!showTextSplitIntoWords">
       <label class="form-check-label" for="toggleSplitWords">
-        Ver texto desglosado por frases
+        {{ 'View text broken down by sentences' | translate }}
       </label>
     </div>
 
     <div class="form-check">
       <input class="form-check-input" type="checkbox" id="toggleSplitWords" (change)="changePinyin()" [ngModel]="showPinyin">
       <label class="form-check-label" for="toggleSplitWords">
-        Mostrar Pinyin
+        {{ 'Show Pinyin' | translate }}
       </label>
     </div>
  
     <div *ngIf="showTextSplitIntoWords">
       <div *ngIf="showOriginalText">
-        <h5 class="mt-4 text-primary">Texto desglosado por palabras</h5>
+        <h5 class="mt-4 text-primary">{{ 'Text broken down by words' | translate }}</h5>
         <div class="text-muted my-4">
-            Haz click sobre una palabra para ver su traducción.
+            {{ 'Click on a word to see its translation.' | translate }}
         </div>
         <p class="text-xlarge" style="white-space: pre-line;">
             <span *ngFor="let word of originalText; let i = index" >
@@ -173,22 +173,22 @@
         </p>
       </div>
       <div *ngIf="!showOriginalText">
-        <h5 class="mt-4 text-primary">Texto traducido</h5>
+        <h5 class="mt-4 text-primary">{{'Translated text' | translate}}</h5>
         <div class="text-muted my-4">
-            Mostrando el texto en español:
+            {{'Showing the translated text' | translate}}
         </div>
         <p class="text-xlarge" style="white-space: pre-line;">
             <span>
-                {{ text.spanishTranslation }}
+                {{ translate.currentLang === 'en' ? text.englishTranslation : text.spanishTranslation }}
             </span>
         </p>
       </div>
     </div>
 
     <div *ngIf="!showTextSplitIntoWords">
-      <h5 class="mt-4 text-success">Texto desglosado por frases</h5>
+      <h5 class="mt-4 text-success">{{ 'Text broken down by sentences' | translate }}</h5>
       <div class="text-muted my-4">
-          Haz click sobre una frase para ver su traducción.
+          {{ 'Click on a sentence to see its translation.' | translate }}
       </div>
       <p *ngIf="showOriginalText" class="text-xlarge" style="white-space: pre-line;">
           <span 
@@ -201,7 +201,11 @@
               {{ sentence }}
           </span>
       </p>
+
       <p *ngIf="!showOriginalText" class="text-xlarge" style="white-space: pre-line;">
+
+        <!-- Español -->
+        <ng-container *ngIf="translate.currentLang === 'es'">
           <span 
             *ngFor="let sentence of translatedSpanishTextSeparatedBySentences; let i = index" 
             class="hover-highlight"
@@ -211,11 +215,27 @@
             [attr.data-bs-content]="getTooltipHtml(i)">
               {{ sentence }}
           </span>
+        </ng-container>
+
+        <!-- Inglés -->
+        <ng-container *ngIf="translate.currentLang === 'en'">
+          <span 
+            *ngFor="let sentence of translatedEnglishTextSeparatedBySentences; let i = index" 
+            class="hover-highlight"
+            data-bs-toggle="popover" 
+            triggers="focus" 
+            data-bs-placement="top" 
+            [attr.data-bs-content]="getTooltipHtml(i)">
+              {{ sentence }}
+          </span>
+        </ng-container>
+
       </p>
+
     </div>
 
     <div class="text-center mt-4">
-      <button class="btn-back" (click)="back();">Volver</button>
+      <button class="btn-back" (click)="back();">{{ 'Back' | translate }}</button>
     </div>
   </div>
 
@@ -224,7 +244,7 @@
     <div class="add-word-modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="errorModalLabel">Error</h5>
+          <h5 class="modal-title" id="errorModalLabel">{{ 'Error' | translate }}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeErrorModal()"></button>
         </div>
         <div class="modal-body">
@@ -239,7 +259,7 @@
     <div class="add-word-modal">
       <div class="modal-content modal-success">
         <div class="modal-header">
-          <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+          <h5 class="modal-title" id="successModalLabel">{{ 'Success' | translate }}</h5>
           <button type="button" class="btn-close" aria-label="Close" (click)="closeSuccessModal()"></button>
         </div>
         <div class="modal-body">
@@ -255,16 +275,16 @@
     <button class="btn-close-top" aria-label="Cerrar" (click)="initAddWordSection()">&times;</button>
 
     <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
-      Mis colecciones:
+      {{ 'My collections:' | translate }}
     </h1>
 
     <div class="text-center my-4">
-      Elige la colección en la que deseas guardar '{{wordToAdd}}'.
+      {{ 'Choose the collection where you want to save' | translate }} '{{wordToAdd}}'.
     </div>
 
     <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" (click)="saveWordToCollection(collection.id, wordToAdd)">
       <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
-        <div><strong>Creada:</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
+        <div><strong>{{ 'Created:' | translate }}</strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
       </div>
       <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
     </div>

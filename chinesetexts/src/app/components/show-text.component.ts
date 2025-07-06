@@ -3,6 +3,7 @@ import { TextService } from '../sevices/textService';
 import { Text } from '../model/text';
 import { Router } from '@angular/router';
 import { LoginService } from '../sevices/loginService';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'show-text',
@@ -11,7 +12,7 @@ import { LoginService } from '../sevices/loginService';
 export class AppShowText implements OnInit{
   texts: Text[] = [];
 
-  constructor(private textService:TextService, private router: Router, private loginService: LoginService){}
+  constructor(private textService:TextService, private router: Router, private loginService: LoginService, public translate: TranslateService){}
 
   ngOnInit(): void {
       this.loginService.reqIsLogged().subscribe(() => {
