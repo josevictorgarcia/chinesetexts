@@ -28,7 +28,6 @@
       background-color: #e74c3c;
     }
 
-    /* Estilos para el botón de basura */
     .btn-trash {
       position: absolute;
       top: 10px;
@@ -44,10 +43,35 @@
       color: #c0392b;
     }
 
-    /* Asegurarse de que cada colección tenga una posición relativa para que el botón de basura se pueda posicionar */
+    /* Estilo para el botón de editar */
+    .btn-edit {
+      position: absolute;
+      top: 40px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: #f39c12;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-edit:hover {
+      color: #e67e22;
+    }
+
     .collection-container {
       position: relative;
-      padding-left: 30px; /* Deja espacio para el botón */
+      padding-left: 30px;
+    }
+
+    /* Estilo para el modal */
+    .modal-content {
+      border-radius: 10px;
+    }
+
+    .modal-header {
+      background-color: #c0392b;
+      color: white;
     }
   </style>
 
@@ -84,13 +108,17 @@
     </form>
 
     <div *ngFor="let collection of collections" class="collection-container border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
+      <!-- Botón de editar -->
+      <button class="btn-edit" (click)="openEditModal(collection, $event)">
+        <i class="bi bi-pencil"></i>
+      </button>
+
       <!-- Botón de basura -->
       <button class="btn-trash" (click)="deleteCollection(collection.id, $event)">
         <i class="bi bi-trash"></i>
       </button>
       
       <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
-        <!-- Aquí muestras la fecha de creación y el número de flashcards -->
         <div><strong>{{ 'Created:' | translate }} </strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
       </div>
       <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
@@ -102,8 +130,38 @@
       {{ 'You need to log in to access the flashcard collections.' | translate }}
   </div>
 
-  <!-- Botón volver (opcional) -->
+  <!-- Botón volver -->
   <div class="text-center mt-4">
     <button class="btn-back" (click)="back()">{{ 'Back' | translate }}</button>
+  </div>
+
+  <!-- Modal de edición -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">{{ 'Edit Collection' | translate }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="editCollectionName">{{ 'New Collection Name' | translate }}</label>
+              <input 
+                id="editCollectionName" 
+                name="editCollectionName" 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="selectedCollection.title" 
+                required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel' | translate }}</button>
+          <button type="submit" class="btn btn-success" style="background-color: #27ae60;" (click)="saveEditedCollection()">{{ 'Save changes' | translate }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

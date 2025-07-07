@@ -15,6 +15,9 @@ export class Flashcards implements OnInit{
     collections: Collection[] = [];
     displayFormCreateCollection: boolean = false;
     name: string = '';
+    selectedCollection: Collection = { id: undefined, title: '', date: '' };
+
+    modal: any
   
     constructor(private flashcardService:FlashcardService, public loginService: LoginService, private router: Router){}
 
@@ -65,6 +68,26 @@ export class Flashcards implements OnInit{
       } else {
         console.error("Collection ID is undefined");
       }
+    }
+
+
+    // Método para abrir el modal de edición
+    openEditModal(collection: any, event: any) {
+      event.stopPropagation();
+      this.selectedCollection = { ...collection };
+      this.modal = new (window as any).bootstrap.Modal(document.getElementById('editModal'));
+      this.modal.show();
+    }
+
+    saveEditedCollection() {
+      this.flashcardService.putCollection(this.selectedCollection).subscribe(
+        () => {
+          console.log("Collection updated successfully");
+          this.modal.hide();
+          this.init(); // Refresh the collections after editing
+        },
+        (error) => console.error("An error occurred while updating the collection", error)
+      );
     }
 
     back(){this.router.navigate(['/'])}

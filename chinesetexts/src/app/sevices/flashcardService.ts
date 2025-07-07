@@ -38,4 +38,8 @@ export class FlashcardService{
         return this.httpClient.delete<void>(`${BASE_URL}${id}`);
     }
 
+    putCollection(collection: Collection): Observable<Collection> {
+        return this.httpClient.put<Collection>(`${BASE_URL}collection/${collection.id}`, collection);
+    }
+
 }

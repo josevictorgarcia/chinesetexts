@@ -105,5 +105,8 @@
     "Error creating the user. Please make sure all fields are filled in and the password is at least 8 characters long.":"Error al crear el usuario. Por favor, asegúrate de que todos los campos estén completos y que la contraseña tenga al menos 8 caracteres.",
     "User successfully created!":"¡Usuario creado con éxito!",
     "User already exists or there was an error creating the user.":"El usuario ya existe o hubo un error al crear el usuario.",
-    "Error creating the text. Please check that none of the titles in English or Spanish already exist.":"Error al crear el texto. Por favor, verifica que ninguno de los títulos en inglés o español ya exista."
+    "Error creating the text. Please check that none of the titles in English or Spanish already exist.":"Error al crear el texto. Por favor, verifica que ninguno de los títulos en inglés o español ya exista.",
+    "Edit Collection":"Editar Colección",
+    "New Collection Name":"Nuevo nombre de la colección",
+    "Save changes":"Guardar cambios"
 }

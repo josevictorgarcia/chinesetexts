@@ -110,5 +110,18 @@ public class FlashcardControlerRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @PutMapping("/collection/{id}")
+    public ResponseEntity<CollectionDTO> updateCollection(@PathVariable long id, @RequestBody CollectionDTO collectionDTO) {
+        Collection existingCollection = collectionService.getCollection(id);
+        if (existingCollection != null) {
+            existingCollection.setTitle(collectionDTO.title());
+            //existingCollection.setDate(LocalDate.now());
+            Collection updatedCollection = collectionService.save(existingCollection);
+            return ResponseEntity.ok(collectionService.toDTO(updatedCollection));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     
 }
