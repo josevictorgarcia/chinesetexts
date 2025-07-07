@@ -128,6 +128,26 @@
     .btn-warning:hover {
       background-color: #f1c40f;
     }
+
+    /* Estilo simplificado para el botón de basura */
+    .btn-trash {
+      font-size: 1.5rem;
+      color: #c0392b;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      top: 25px;
+      right: 5vw;
+    }
+
+    .btn-trash:hover {
+      color: #e74c3c;
+    }
+
+    .trash-icon {
+      font-size: 2rem;
+    }
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
@@ -140,8 +160,12 @@
 
       <!-- Item 1 -->
       <div class="carousel-item" *ngFor="let flashcard of flashcards; let i = index" [class.active]="i === 0">
+        <div class="border rounded shadow-sm p-4 bg-light position-relative">
+          <!-- Botón de basura en la esquina superior derecha -->
+          <button (click)="deleteFlashcard(flashcard.id)" class="btn-trash">
+            <i class="bi bi-trash trash-icon"></i>
+          </button>
 
-        <div class="border rounded shadow-sm p-4 bg-light">
           <div class="chinese-word">
             {{ flashcard.word.chinese }}
           </div>

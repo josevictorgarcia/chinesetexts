@@ -1,6 +1,7 @@
 package com.tesseract.demo.Model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +20,7 @@ public class Flashcard {
     @JoinColumn(name = "word_id")
     private Word word;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "text_id")
     private Text example;
 

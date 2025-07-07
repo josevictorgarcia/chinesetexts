@@ -2,12 +2,15 @@ package com.tesseract.demo.Model;
 
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Text {
@@ -31,6 +34,9 @@ public class Text {
     private String englishDescription;
     @Lob
     private String spanishDescription;
+
+    @OneToMany(mappedBy = "example", cascade = CascadeType.REMOVE)  // Elimina las flashcards si se borra el texto
+    private List<Flashcard> flashcards;
 
     private LocalDate creationDate;
 

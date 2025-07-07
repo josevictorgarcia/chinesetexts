@@ -6,27 +6,15 @@
   <div [routerLink]="'texts/' + text.id" *ngFor="let text of texts" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;">
     <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
       <div>{{ text.creationDate | date:'mediumDate' }}</div>
-      <div><strong>{{ 'level:' | translate }}</strong> {{ text.level }}</div>
+      <div class="d-flex align-items-center gap-2">
+        <div><strong>{{ 'level:' | translate }}</strong> {{ text.level }}</div>
+        <button *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" (click)="deleteText(text.id, $event)" class="btn btn-sm p-0 border-0 bg-transparent text-danger" title="Delete" style="font-size: 1.2rem;">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
     </div>
     <h3 class="mb-3 text-dark fw-semibold">{{ translate.currentLang === 'en' ? text.titleEnglish : text.titleSpanish }}</h3>
     <img [src]="'/api/texts/' + text.id + '/image'" alt="{{ translate.currentLang === 'en' ? text.titleEnglish : text.titleSpanish }}" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
     <p>{{ translate.currentLang === 'en' ? text.englishDescription : text.spanishDescription }}</p>
   </div>
 </div>
-
-
-<!--<h1>Add text:</h1>
-<form>
-
-  <textarea [(ngModel)]="this.text.title" name="title" rows="4" cols="50" placeholder="Title"></textarea>
-  <textarea [(ngModel)]="this.text.text" name="text" rows="4" cols="50" placeholder="Text"></textarea>
-  <textarea [(ngModel)]="this.text.translation" name="translation" rows="4" cols="50" placeholder="Translation"></textarea>
-  <button (click)="postText()">Post text</button>
-
-  <ul>
-    <li *ngFor="let text of this.texts">
-      <a [routerLink]="['/text-page', text.id]">Titulo: {{text.title}}</a>
-    </li>
-  </ul>
-
-</form>-->

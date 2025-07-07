@@ -113,6 +113,15 @@ public class TextService {
         return result;
     }
 
+    public boolean deleteText(long id) {
+        if (textRepository.existsById(id)) {
+            textRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private TextDTO toDTO(Text text){
         return textMapper.toDTO(text);
     }

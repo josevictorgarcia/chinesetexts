@@ -50,6 +50,14 @@ public class FlashcardService {
             .toArray(FlashcardDTO[]::new);  // ← Convierte List a FlashcardDTO[]
     }
 
+    public Flashcard findFlashcard(long id) {
+        return flashcardRepository.findById(id).orElse(null);
+    }
+
+    public void delete(Flashcard flashcard) {
+        flashcardRepository.delete(flashcard);
+    }
+
     private WordDTO toDTO(Word word){
         return wordMapper.toDTO(word);
     }

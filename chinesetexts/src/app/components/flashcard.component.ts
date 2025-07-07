@@ -127,6 +127,21 @@ export class FlashcardPage implements OnInit{
       this.examFinished = true;
     }
 
+    deleteFlashcard(id: number | undefined): void {
+      console.log('Eliminar flashcard con id:', id);
+      if (id !== undefined) {
+        this.flashcardService.deleteFlashcard(id).subscribe(
+          () => {
+            console.log('Flashcard eliminada con éxito');
+            this.init(); // Recargar las flashcards después de eliminar
+          },
+          (error) => console.error('Error al eliminar la flashcard', error)
+        );
+      } else {
+        console.error('ID de la flashcard no definido');
+      }
+    }
+
     back(){this.router.navigate(['/flashcards'])}
 
 }

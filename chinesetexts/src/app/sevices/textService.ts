@@ -37,6 +37,10 @@ export class TextService{
       return this.httpClient.get<any>(`${BASE_URL}${id}/EnglishText`);
     }
 
+    deleteText(id: number): Observable<void> {
+      return this.httpClient.delete<void>(`${BASE_URL}${id}`);
+    }
+
     /*getEnglishText(id: number): Observable<any>{
       return this.httpClient.get<any>(`${BASE_URL}${id}/EnglishText`);
     }

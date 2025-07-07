@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppShowText implements OnInit{
   texts: Text[] = [];
 
-  constructor(private textService:TextService, private router: Router, private loginService: LoginService, public translate: TranslateService){}
+  constructor(private textService:TextService, private router: Router, public loginService: LoginService, public translate: TranslateService){}
 
   ngOnInit(): void {
       this.loginService.reqIsLogged().subscribe(() => {
@@ -32,42 +32,20 @@ export class AppShowText implements OnInit{
     )
   }
 
-  /*text: Text = {
-    title: "",
-    text: "",
-    translation: ""
-  }
-  texts: Text[] = [];
-  
-
-  getText(id:number | undefined){
-    //console.log(this.title);
-    //console.log(this.text);
-    //console.log(this.translation);
-
-    //this.title = "";
-    //this.text = "";
-    //this.translation = "";
-    if(id != undefined){
-      this.textService.getText(id).subscribe(
-        (text) => {
-          this.text.title = text.title;
-          this.text.text = text.text;
-          this.text.translation = text.translation;
-          console.log(text);
+  deleteText(id: number | undefined, event: MouseEvent): void {
+    event.stopPropagation(); // Evita que se dispare el routerLink
+    console.log('Eliminar texto con id:', id);
+    if (id !== undefined) {
+      this.textService.deleteText(id).subscribe(
+        () => {
+          console.log('Texto eliminado con éxito');
+          this.loadTexts(); // Recargar los textos después de eliminar
         },
-        (error) => console.error("Error al obtener el texto", error)
+        (error) => console.error('Error al eliminar el texto', error)
       );
+    } else {
+      console.error('ID del texto no definido');
     }
   }
 
-    postText(){
-      this.textService.postText(this.text).subscribe(
-        () => {
-          this.clearForm();
-          this.loadTexts();
-        },
-        (error) => console.error("Error al crear el texto", error)
-      );
-    }*/
 }
