@@ -51,5 +51,21 @@ export class Flashcards implements OnInit{
       )
     }
 
+    deleteCollection(id: number | undefined, event: MouseEvent): void {
+      event.stopPropagation();
+      console.log("Deleting collection with id: ", id);
+      if (id !== undefined) {
+        this.flashcardService.deleteCollection(id).subscribe(
+          () => {
+            console.log("Collection deleted successfully");
+            this.init(); // Refresh the collections after deletion
+          },
+          (error) => console.error("An error occurred while deleting the collection", error)
+        );
+      } else {
+        console.error("Collection ID is undefined");
+      }
+    }
+
     back(){this.router.navigate(['/'])}
 }

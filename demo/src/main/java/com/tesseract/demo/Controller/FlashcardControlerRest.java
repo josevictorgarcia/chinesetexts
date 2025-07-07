@@ -99,5 +99,16 @@ public class FlashcardControlerRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCollection(@PathVariable long id) {
+        Collection collection = collectionService.getCollection(id);
+        if (collection != null) {
+            collectionService.deleteCollection(collection.getId());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     
 }

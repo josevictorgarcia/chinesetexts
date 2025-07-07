@@ -27,6 +27,28 @@
     .btn-back:hover {
       background-color: #e74c3c;
     }
+
+    /* Estilos para el botón de basura */
+    .btn-trash {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: #e74c3c;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-trash:hover {
+      color: #c0392b;
+    }
+
+    /* Asegurarse de que cada colección tenga una posición relativa para que el botón de basura se pueda posicionar */
+    .collection-container {
+      position: relative;
+      padding-left: 30px; /* Deja espacio para el botón */
+    }
   </style>
 
   <h1 class="text-center mb-5" style="font-weight: 700; font-size: 2.5rem; color: #c0392b;">
@@ -34,7 +56,7 @@
   </h1>
 
   <div *ngIf="loginService.isLogged()">
-  <!-- Botón para crear nueva colección -->
+    <!-- Botón para crear nueva colección -->
     <div class="text-center mb-4">
       <button class="btn-create" (click)="formCreateCollection()">
         {{ 'Create New Collection' | translate }}
@@ -55,18 +77,21 @@
       </div>
 
       <div class="text-center mt-4">
-        <button style="margin-bottom: 50px;"
-          class="btn-create">
+        <button style="margin-bottom: 50px;" class="btn-create">
           {{ 'Create' | translate }}
         </button>
       </div>
     </form>
 
-    <div *ngFor="let collection of collections" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
+    <div *ngFor="let collection of collections" class="collection-container border rounded shadow-sm mb-4 p-4" style="cursor: pointer;" [routerLink]="'/flashcards/' + collection.id">
+      <!-- Botón de basura -->
+      <button class="btn-trash" (click)="deleteCollection(collection.id, $event)">
+        <i class="bi bi-trash"></i>
+      </button>
+      
       <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
         <!-- Aquí muestras la fecha de creación y el número de flashcards -->
         <div><strong>{{ 'Created:' | translate }} </strong> {{ collection.date | date: 'MMM d, yyyy' }}</div>
-        <!--<div><strong>Número de Flashcards:</strong> {{ collection.flashcards?.length || 0 }}</div>-->
       </div>
       <h3 class="mb-0 text-dark fw-semibold">{{ collection.title }}</h3>
     </div>

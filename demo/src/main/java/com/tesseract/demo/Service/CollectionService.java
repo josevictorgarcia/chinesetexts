@@ -59,6 +59,10 @@ public class CollectionService {
         return toDTOs(collectionRepository.findByUserOrderByDateDesc(user));
     }
 
+    public void deleteCollection(long id){
+        collectionRepository.deleteById(id);
+    }
+
     private List<CollectionDTO> toDTOs(List<Collection> collections){
         return collectionMapper.toDTO(collections);
     }

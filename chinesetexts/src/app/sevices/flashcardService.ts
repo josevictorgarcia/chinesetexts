@@ -34,4 +34,8 @@ export class FlashcardService{
         return this.httpClient.delete<void>(`${BASE_URL}flashcard/${id}`);
     }
 
+    deleteCollection(id: number): Observable<void> {
+        return this.httpClient.delete<void>(`${BASE_URL}${id}`);
+    }
+
 }
