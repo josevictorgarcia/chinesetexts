@@ -26,4 +26,8 @@ export class WordService{
       return this.httpClient.get<Word[]>(`${BASE_URL}textWords`, { params });
     }
 
+    putWord(word: Word): Observable<Word> {
+      return this.httpClient.put<Word>(`${BASE_URL}/edit`, word);
+    }
+
 }

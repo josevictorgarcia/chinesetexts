@@ -64,6 +64,16 @@ public class UserService {
         }
     }
 
+    public boolean deleteUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            userRepository.delete(user.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public UserDTO findById (long id) {
         return toDTO(userRepository.findById(id).orElseThrow());
     }

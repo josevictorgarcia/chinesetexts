@@ -26,4 +26,9 @@ export class UserService{
         const email = encodeURIComponent(user.email);
         return this.httpClient.put<UserWithPassword>(`${BASE_URL}${email}`, user);
     }
+
+    deleteUser(email: string): Observable<any> {
+        const params = new HttpParams().set('email', email);
+        return this.httpClient.delete<any>(`${BASE_URL}`, { params });
+    }
 }

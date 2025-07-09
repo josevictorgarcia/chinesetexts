@@ -72,6 +72,7 @@
     "New password":"Nueva contraseña",
     "Enter your new password":"Introduzca su nueva contraseña",
     "Language":"Idioma",
+    "Chinese":"Chino",
     "English":"Inglés",
     "Spanish":"Español",
     "Edit Profile":"Editar Perfil",
@@ -108,5 +109,14 @@
     "Error creating the text. Please check that none of the titles in English or Spanish already exist.":"Error al crear el texto. Por favor, verifica que ninguno de los títulos en inglés o español ya exista.",
     "Edit Collection":"Editar Colección",
     "New Collection Name":"Nuevo nombre de la colección",
-    "Save changes":"Guardar cambios"
+    "Save changes":"Guardar cambios",
+    "Edit word":"Editar palabra",
+    "Enter the modified word":"Introduzca la palabra modificada",
+    "Error editing the word.": "Error al modificar la palabra.",
+    "Word edited successfully.": "Palabra modificada correctamente.",
+    "Delete user":"Eliminar usuario",
+    "Email of the user to delete":"Email del usuario a borrar",
+    "Enter the email of the user to delete":"Pon el email del usuario a borrar",
+    "Error deleting the user.": "Error al eliminar el usuario.",
+    "User deleted successfully.": "Usuario eliminado correctamente."
 }

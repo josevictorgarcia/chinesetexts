@@ -33,6 +33,10 @@ public class Word {
         return chinese;
     }
 
+    public String getPinyin() {
+        return pinyin;
+    }
+
     public String getEnglish() {
         return english;
     }
@@ -47,6 +51,10 @@ public class Word {
 
     public void setChinese(String chinese) {
         this.chinese = chinese;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
     }
 
     public void setEnglish(String english) {

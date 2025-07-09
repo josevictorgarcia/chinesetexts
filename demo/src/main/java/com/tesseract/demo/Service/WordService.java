@@ -63,6 +63,24 @@ public class WordService {
         }
     }
 
+    public WordDTO updateOrSave(WordDTO wordDTO) {
+        Optional<Word> word = wordRepository.findByChinese(wordDTO.chinese());
+        if (word.isPresent()) {
+            if(!wordDTO.pinyin().isEmpty()){
+                word.get().setPinyin(wordDTO.pinyin());
+            }
+            if(!wordDTO.english().isEmpty()){
+                word.get().setEnglish(wordDTO.english());
+            }
+            if(!wordDTO.spanish().isEmpty()){
+                word.get().setSpanish(wordDTO.spanish());
+            }
+            return toDTO(wordRepository.save(word.get()));
+        } else {
+            return save(wordDTO);
+        }
+    }
+
     private WordDTO toDTO(Word word){
         return wordMapper.toDTO(word);
     }

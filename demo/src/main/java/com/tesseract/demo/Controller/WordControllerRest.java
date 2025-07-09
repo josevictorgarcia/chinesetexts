@@ -23,6 +23,8 @@ import com.tesseract.demo.dto.TextDTO;
 import com.tesseract.demo.dto.WordDTO;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/words")
@@ -88,5 +90,13 @@ public class WordControllerRest {
         return ResponseEntity.status(HttpStatus.OK).body(pinyinResults);
     }
     
+    @PutMapping("/edit")
+    public ResponseEntity<WordDTO> editWord(@RequestBody WordDTO word) {
+        WordDTO updatedWord = wordService.updateOrSave(word);
+        if (updatedWord == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(updatedWord);
+    }
 
 }

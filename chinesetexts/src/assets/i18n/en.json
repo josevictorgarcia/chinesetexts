@@ -72,6 +72,7 @@
     "New password":"New password",
     "Enter your new password":"Enter your new password",
     "Language":"Language",
+    "Chinese":"Chinese",
     "English":"English",
     "Spanish":"Spanish",
     "Edit Profile":"Edit Profile",
@@ -108,5 +109,14 @@
     "Error creating the text. Please check that none of the titles in English or Spanish already exist.":"Error creating the text. Please check that none of the titles in English or Spanish already exist.",
     "Edit Collection":"Edit Collection",
     "New Collection Name":"New Collection Name",
-    "Save changes":"Save changes"
+    "Save changes":"Save changes",
+    "Edit word":"Edit word",
+    "Enter the modified word": "Enter the modified word",
+    "Error editing the word.": "Error editing the word.",
+    "Word edited successfully.": "Word edited successfully.",
+    "Delete user":"Delete user",
+    "Email of the user to delete":"Email of the user to delete",
+    "Enter the email of the user to delete":"Enter the email of the user to delete",
+    "Error deleting the user.": "Error deleting the user.",
+    "User deleted successfully.": "User deleted successfully."
 }

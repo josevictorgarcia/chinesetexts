@@ -73,6 +73,20 @@
     .btn-back:hover {
       background-color: #e74c3c;
     }
+
+    .btn-edit {
+      font-size: 1rem;
+      color: #fff;
+      background-color: #f39c12;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-edit:hover {
+      background-color: #e67e22;
+    }
   </style>
 
   <h1 class="text-center mb-5 profile-title">{{ 'User Profile' | translate }}</h1>
@@ -162,6 +176,117 @@
       </div>
     </div>
   </form>
+
+  <!--Seccion admin-->
+  <div *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="border rounded shadow-sm p-4 mt-5">
+        
+    <!-- Sección editar palabra -->
+    <h2 class="text-center mb-4" style="color: #c0392b;">{{ 'Edit word' | translate }}</h2>
+
+    <div class="form-group">
+      <label class="form-label" style="font-weight: 600;"> {{ 'Enter the modified word' | translate }} </label>
+      <div class="row">
+
+        <div class="col-md-3 mb-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="chinese"
+            [(ngModel)]="editedWord.chinese"
+            placeholder="{{ 'Chinese' | translate }}"
+            required>
+        </div>
+
+        <div class="col-md-3 mb-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="pinyin"
+            [(ngModel)]="editedWord.pinyin"
+            placeholder="Pinyin"
+            required>
+        </div>
+
+        <div class="col-md-3 mb-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="english"
+            [(ngModel)]="editedWord.english"
+            placeholder="{{ 'English' | translate }}"
+            required>
+        </div>
+
+        <div class="col-md-3 mb-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="spanish"
+            [(ngModel)]="editedWord.spanish"
+            placeholder="{{ 'Spanish' | translate }}"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button 
+        (click)="editWord()" 
+        class="btn-edit" 
+            
+        >
+        {{ 'Save' | translate }}
+      </button>
+    </div>
+
+    <div *ngIf="errorEditWord" class="text-danger mt-3 text-center">
+      {{ 'Error editing the word.' | translate }}
+    </div>
+
+    <div *ngIf="successEditWord" class="text-success mt-3 text-center">
+      {{ 'Word edited successfully.' | translate }}
+    </div>
+    <!-- Fin sección editar palabra -->
+
+  </div>
+
+  <!-- Sección borrar usuario -->
+    <div *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="border rounded shadow-sm p-4 mt-5">
+      <h2 class="text-center mb-4" style="color: #c0392b;">{{ 'Delete user' | translate }}</h2>
+
+      <div class="form-group">
+        <label class="form-label" for="deleteEmail">{{ 'Email of the user to delete' | translate }}</label>
+        <input
+          type="email"
+          class="form-control"
+          id="deleteEmail"
+          name="deleteEmail"
+          [(ngModel)]="deleteEmail"
+          placeholder="{{'Enter the email of the user to delete' | translate}}"
+          required
+        />
+      </div>
+
+      <div class="text-center mt-4">
+        <button
+          class="btn btn-danger"
+          (click)="deleteUser()"
+          style="padding: 10px 20px; font-size: 1rem;"
+        >
+          <i class="bi bi-trash"></i> {{ 'Delete user' | translate }}
+        </button>
+      </div>
+
+      <div *ngIf="errorDeleteEmail" class="text-danger mt-3 text-center">
+        {{ 'Error deleting the user.' | translate }}
+      </div>
+
+      <div *ngIf="successDeleteEmail" class="text-success mt-3 text-center">
+        {{ 'User deleted successfully.' | translate }}
+      </div>
+    </div>
+  <!-- Fin sección borrar usuario -->
+  <!--Fin Seccion admin-->
 
   <div class="text-center mt-4">
     <button class="btn-back" (click)="back()">{{ 'Back' | translate }}</button>
