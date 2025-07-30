@@ -63,7 +63,7 @@
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#">HSK5</a></li>
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#">HSK6</a></li>
         <li class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/flashcards'">Flashcards</a></li>
-        <li *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">New Text</a></li>
+        <li *ngIf="loginService.isLogged() && loginService.isRoleAdmin()" class="nav-item"><a class="nav-link text-dark fw-semibold" href="#" [routerLink]="'/texts/new'">{{ 'New Text' | translate }}</a></li>
       </ul>
 
       <ul *ngIf="!showLoginForm && !loginService.isLogged()" class="navbar-nav ms-auto mb-2 mb-lg-0">
