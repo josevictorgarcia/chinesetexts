@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppShowText implements OnInit{
   texts: Text[] = [];
+  selectedFile: File | null = null;
 
   constructor(private textService:TextService, private router: Router, public loginService: LoginService, public translate: TranslateService){}
 
@@ -45,6 +46,20 @@ export class AppShowText implements OnInit{
       );
     } else {
       console.error('ID del texto no definido');
+    }
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onSubmit(){
+    if (this.selectedFile !== null && this.selectedFile !== undefined){
+      console.log('Uploading image')
+      this.textService.processImage(this.selectedFile).subscribe(
+        (extractedText) => {this.selectedFile = null, console.log(extractedText)},
+        (error) => console.error("Error processing image", error)
+      )
     }
   }
 

@@ -36,6 +36,26 @@ To setup the project locally, follow these steps.
      npm start
 ```
 
+**6. Start Python OCR Service:**
+If running locally, move to the ocr-service folder in this repository ```cd ocr-service```, open a new terminal and run the following commands to create a virtual environment and install dependencies:
+
+```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+```
+
+Then run the ocr-service:
+```bash
+    python paddleOCRService.py
+```
+
+NOTE. Useful links:
+- [paddle-ocr](https://github.com/PaddlePaddle/PaddleOCR)
+- [paddle-ocr quick start](https://www.paddleocr.ai/latest/en/quick_start.html)
+- [paddlepaddle](https://github.com/PaddlePaddle/Paddle)
+- [paddlepaddle official website](https://www.paddlepaddle.org.cn/en)
+
 ## Deployment
 
 To deploy the project on a Virtual Machine (VM), follow these steps. Ensure that the VM is running Ubuntu 20.04 or similar Linux-based operating system.

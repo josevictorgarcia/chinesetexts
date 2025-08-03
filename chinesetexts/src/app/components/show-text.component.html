@@ -3,6 +3,28 @@
 
   <div class="text-center my-4">{{ 'Click on one of the following texts to start reading.' | translate }}</div>
 
+  <!-- Imagen -->
+  <form (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="image">{{ 'Image' | translate }}</label>
+      <input 
+        id="image" 
+        name="image" 
+        type="file" 
+        (change)="onFileSelected($event)"
+        class="form-control">
+    </div>
+
+    <div class="text-center mt-4">
+      <button 
+        class="btn-submit">
+        {{ 'Save' | translate }}
+      </button>
+    </div>
+
+  </form>
+
   <div [routerLink]="'texts/' + text.id" *ngFor="let text of texts" class="border rounded shadow-sm mb-4 p-4" style="cursor: pointer;">
     <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
       <div>{{ text.creationDate | date:'mediumDate' }}</div>

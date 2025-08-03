@@ -41,6 +41,12 @@ export class TextService{
       return this.httpClient.delete<void>(`${BASE_URL}${id}`);
     }
 
+    processImage(file: File): Observable<any> {
+      const formData = new FormData();
+      formData.append('imageFile', file);
+      return this.httpClient.post(`${BASE_URL}paddleOCR`, formData, {responseType: 'text'});
+    }
+
     /*getEnglishText(id: number): Observable<any>{
       return this.httpClient.get<any>(`${BASE_URL}${id}/EnglishText`);
     }

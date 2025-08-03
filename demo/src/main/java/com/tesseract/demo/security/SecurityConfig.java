@@ -66,6 +66,7 @@ public class SecurityConfig {
                     //.requestMatchers(HttpMethod.PUT,"/api/v1/users/**").hasAnyRole("USER")
 					//.requestMatchers(HttpMethod.GET,"/api/v1/users/**").hasAnyRole("ADMIN", "USER")
 					.requestMatchers( HttpMethod.GET,"/api/words/textWords").permitAll()
+					.requestMatchers( HttpMethod.POST,"/api/texts/paddleOCR").permitAll()
 					.requestMatchers(HttpMethod.GET, "/api/flashcards/**").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.POST, "/api/texts/**").hasAnyRole("ADMIN")
 					.requestMatchers(HttpMethod.GET, "/api/texts/new").hasAnyRole("ADMIN")

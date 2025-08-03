@@ -102,6 +102,17 @@ public class TextControllerRest {
         }
     }
 
+    @PostMapping("/paddleOCR")
+    public ResponseEntity<String> processImage(@RequestParam MultipartFile imageFile) {
+        try {
+            // Aquí iría la lógica para procesar la imagen con OCR (como Tesseract, Google Vision API, etc.)
+            String extractedText = textService.processWithPaddleOCR(imageFile);
+            return ResponseEntity.ok(extractedText);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
+        }
+    }
+
     /*@GetMapping("/{id}/EnglishText")
     public ResponseEntity<String[][]> getTextEnglish(@PathVariable long id){
         Text text = this.textService.getText(id);

@@ -8,9 +8,18 @@ import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tesseract.demo.Model.Text;
 import com.tesseract.demo.Repository.TextRepository;
@@ -120,6 +129,37 @@ public class TextService {
         } else {
             return false;
         }
+    }
+
+    public String processWithPaddleOCR(MultipartFile file) throws Exception{
+
+        String url = "http://localhost:5000/ocr";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Crear recurso del archivo
+        ByteArrayResource fileAsResource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename(); // Asegura que el nombre del archivo se envíe
+            }
+        };
+
+        // Crear cuerpo multipart
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileAsResource);
+
+        // Headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        // Enviar POST
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+
+        return response.getBody();
+
     }
 
     private TextDTO toDTO(Text text){
