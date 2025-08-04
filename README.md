@@ -37,7 +37,7 @@ To setup the project locally, follow these steps.
 ```
 
 **6. Start Python OCR Service:**
-If running locally, move to the ocr-service folder in this repository ```cd ocr-service```, open a new terminal and run the following commands to create a virtual environment and install dependencies:
+If running locally, move to the ocr-service folder in this repository ```cd ocr-service```, open a new terminal and run the following commands to create a virtual environment and install dependencies. PaddleOCR will be downloaded and used locally:
 
 ```bash
     python3 -m venv venv
@@ -55,6 +55,26 @@ NOTE. Useful links:
 - [paddle-ocr quick start](https://www.paddleocr.ai/latest/en/quick_start.html)
 - [paddlepaddle](https://github.com/PaddlePaddle/Paddle)
 - [paddlepaddle official website](https://www.paddlepaddle.org.cn/en)
+
+**7. Start Python AI Service:**
+If running locally, move to the ai-service folder in this repository ```cd ai-service```, open a new terminal and run the following commands to create a virtual environment and install dependencies. DeepSeek will be used through an API, since downloading and running its model locally would require substantial resources and disk space:
+
+```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+```
+
+Then run the ai-service:
+```bash
+    python deepseekService.py
+```
+
+NOTE: This service uses a DeepSeek free API provided by [openrouter.ai](https://openrouter.ai/). However, it can be modified to use another AI model or the official [DeepSeek](https://www.deepseek.com/) API. To do so, update the [.env](https://github.com/josevictorgarcia/chinesetexts/blob/main/ai-service/.env) file with the corresponding key and the [deepseekService.py](https://github.com/josevictorgarcia/chinesetexts/blob/main/ai-service/deepseekService.py) according to your specific implementation needs.
+
+NOTE. Useful links:
+
+- [DeepSeek API](https://api-docs.deepseek.com/)
 
 ## Deployment
 

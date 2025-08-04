@@ -107,7 +107,8 @@ public class TextControllerRest {
         try {
             // Aquí iría la lógica para procesar la imagen con OCR (como Tesseract, Google Vision API, etc.)
             String extractedText = textService.processWithPaddleOCR(imageFile);
-            return ResponseEntity.ok(extractedText);
+            String brokenDownText = textService.processWithDeepseek(extractedText);
+            return ResponseEntity.ok(brokenDownText);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
         }

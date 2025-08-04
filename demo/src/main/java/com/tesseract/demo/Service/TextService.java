@@ -3,8 +3,10 @@ package com.tesseract.demo.Service;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +162,24 @@ public class TextService {
 
         return response.getBody();
 
+    }
+
+    public String processWithDeepseek(String chineseText) throws Exception {
+        String url = "http://localhost:5001/analyze";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("text", chineseText);
+
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(jsonBody, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+        return response.getBody();
     }
 
     private TextDTO toDTO(Text text){
