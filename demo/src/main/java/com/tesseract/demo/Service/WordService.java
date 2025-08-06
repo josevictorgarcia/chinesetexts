@@ -1,12 +1,20 @@
 package com.tesseract.demo.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tesseract.demo.Model.Word;
 import com.tesseract.demo.Repository.WordRepository;
 import com.tesseract.demo.dto.TextDTO;
@@ -52,6 +60,55 @@ public class WordService {
             }
         }
         return pendingWords.toArray(new WordDTO[0]);
+    }
+
+    private String[] parseJsonArray(String jsonArrayString) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jsonArrayString, String[].class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new String[0];
+        }
+    }
+
+    public List<WordDTO> saveWords(List<String> words) {
+        List<WordDTO> savedWords = new ArrayList<>();
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> jsonBody = new HashMap<>();
+        jsonBody.put("text", words); // ✅ Pasamos la lista como objeto, no como string
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(jsonBody, headers);
+
+        String baseUrl = "http://localhost:5001";
+
+        // Llamar a cada endpoint para obtener los arrays completos
+        ResponseEntity<String> responseEnglish = restTemplate.postForEntity(baseUrl + "/getWordsEnglish", request, String.class);
+        ResponseEntity<String> responseSpanish = restTemplate.postForEntity(baseUrl + "/getWordsSpanish", request, String.class);
+        ResponseEntity<String> responsePinyin = restTemplate.postForEntity(baseUrl + "/getWordsPinyin", request, String.class);
+
+        // Parsear las respuestas (que son JSON array strings) a String[]
+        String[] arrayEnglish = parseJsonArray(responseEnglish.getBody());
+        String[] arraySpanish = parseJsonArray(responseSpanish.getBody());
+        String[] arrayPinyin = parseJsonArray(responsePinyin.getBody());
+
+        for (int i = 0; i < words.size(); i++) {
+            String chineseWord = words.get(i);
+            if (chineseWord != null && !chineseWord.trim().isEmpty() && !wordRepository.existsByChinese(chineseWord)) {
+                String english = i < arrayEnglish.length ? arrayEnglish[i] : null;
+                String spanish = i < arraySpanish.length ? arraySpanish[i] : null;
+                String pinyin = i < arrayPinyin.length ? arrayPinyin[i] : null;
+
+                Word newWord = new Word(chineseWord, pinyin, english, spanish);
+                Word saved = wordRepository.save(newWord);
+                savedWords.add(toDTO(saved));
+            }
+        }
+
+        return savedWords;
     }
 
     public WordDTO getWord(String chinese) {

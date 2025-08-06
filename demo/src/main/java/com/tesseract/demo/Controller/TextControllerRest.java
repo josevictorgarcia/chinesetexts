@@ -3,13 +3,18 @@ package com.tesseract.demo.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tesseract.demo.Model.Text;
+import com.tesseract.demo.Service.JiebaService;
 import com.tesseract.demo.Service.TextService;
+import com.tesseract.demo.Service.WordService;
 import com.tesseract.demo.dto.TextDTO;
 
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -33,6 +38,12 @@ public class TextControllerRest {
 
     @Autowired
     private TextService textService;
+
+    @Autowired
+    public JiebaService jiebaService;
+
+    @Autowired
+    public WordService wordService;
     
     @GetMapping("/")
     public List<TextDTO> getTexts() {
@@ -102,13 +113,39 @@ public class TextControllerRest {
         }
     }
 
+    public String[] dividirPorPuntos(String texto) {
+        if (texto == null || texto.isEmpty()) {
+            return new String[0];
+        }
+
+        // Dividir por punto, eliminando espacios extra al inicio o final de cada frase
+        return Arrays.stream(texto.split("\\。"))
+                    .map(String::trim)              // elimina espacios alrededor
+                    .filter(s -> !s.isEmpty())      // elimina elementos vacíos
+                    .toArray(String[]::new);
+    }
+
     @PostMapping("/paddleOCR")
     public ResponseEntity<String> processImage(@RequestParam MultipartFile imageFile) {
         try {
             // Aquí iría la lógica para procesar la imagen con OCR (como Tesseract, Google Vision API, etc.)
             String extractedText = textService.processWithPaddleOCR(imageFile);
-            String brokenDownText = textService.processWithDeepseek(extractedText);
-            return ResponseEntity.ok(brokenDownText);
+            //String correctedText = textService.processWithDeepseek(extractedText);
+            String[] oraciones = dividirPorPuntos(extractedText);
+            StringBuilder englishTranslation = new StringBuilder();
+            StringBuilder spanishTranslation = new StringBuilder();
+            for (String oracion : oraciones) {
+                String[] translations = textService.getTranslationsWithDeepseek(oracion);
+                englishTranslation.append(translations[0]).append(". ");
+                spanishTranslation.append(translations[1]).append(". ");
+            }
+            List<String> textWords = jiebaService.segment(extractedText);
+            wordService.saveWords(textWords);
+            String[] titles = textService.getTitlesWithDeepseek(extractedText);     //[0] para ingles, [1] para espanol
+            String[] description = textService.getDescriptionsWithDeepseek(extractedText);
+            Text text = new Text(titles[0], titles[1], extractedText, englishTranslation.toString().trim(), spanishTranslation.toString().trim(), description[0], description[1], "-", LocalDate.of(2025, 8, 5), null);
+            textService.save(text);
+            return ResponseEntity.ok(extractedText + titles[0] + titles[1] + englishTranslation + spanishTranslation + description[0] + description[1]);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
         }

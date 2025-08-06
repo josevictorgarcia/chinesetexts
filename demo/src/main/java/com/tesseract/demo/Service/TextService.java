@@ -23,6 +23,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tesseract.demo.Model.Text;
 import com.tesseract.demo.Repository.TextRepository;
 import com.tesseract.demo.dto.TextDTO;
@@ -180,6 +181,73 @@ public class TextService {
         ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
         return response.getBody();
+    }
+
+    public String[] getTitlesWithDeepseek(String chineseText) throws Exception {
+        String url = "http://localhost:5001/getTitles";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("text", chineseText);
+
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(jsonBody, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response.getBody(), String[].class);
+    }
+
+    public String[] getTranslationsWithDeepseek(String chineseText) throws Exception {
+        // 1. URL de la API donde se solicitarán las traducciones
+        String url = "http://localhost:5001/getTranslations";
+
+        // 2. Crear un RestTemplate para hacer la solicitud HTTP
+        RestTemplate restTemplate = new RestTemplate();
+        
+        // 3. Configurar los encabezados HTTP para indicar que enviamos y recibimos JSON
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // 4. Crear el cuerpo de la solicitud (JSON) con el texto chino
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("text", chineseText); // El texto en chino que queremos traducir
+
+        // 5. Crear un HttpEntity que contiene el cuerpo de la solicitud y los encabezados
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(jsonBody, headers);
+
+        // 6. Hacer la solicitud POST a la API y obtener la respuesta
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+        // 8. Convertir la respuesta JSON a un arreglo de String usando ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+        String[] translations = mapper.readValue(response.getBody(), String[].class);
+
+        // 10. Retornar el arreglo de traducciones
+        return translations;
+    }
+
+    public String[] getDescriptionsWithDeepseek(String chineseText) throws Exception {
+        String url = "http://localhost:5001/getDescriptions";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("text", chineseText);
+
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(jsonBody, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response.getBody(), String[].class);
     }
 
     private TextDTO toDTO(Text text){
